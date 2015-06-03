@@ -1,9 +1,9 @@
 # jMsvc
-View Controller JS
+<b style="color:green">View Controller JS</b>
 
 
 # Example 
-controller.js <br>
+<b style="color:green">controller.js </b><br>
 <b>jMsvc</b>.configHash(true) <br>
 .defaultAction("index")<br>
 .configRoots({action:"index",url:"home"})<br>
@@ -57,7 +57,7 @@ controller.js <br>
 }<br>
 <br>
 # <br>
-view.js
+<b style="color:green">view.js</b>
 <br>
 <b>view.index</b> = function () {<br>
    return this.execute(function(){<br>
@@ -91,7 +91,8 @@ view.js
 <br>
 
 
-# pag.html
+# 
+<b> pag.html</b>
 <code>
 	<body><br>
  <br>
