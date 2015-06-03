@@ -117,7 +117,7 @@
 		<a href="#servizi" value="servizi">servizi</a> 
 		<a href="#contatto" value="contatto">contatto</a> 
 		<a href="#home" value="home">home</a> 
-                
+		
                 OR
                 jMsvc.configHash(false)
                 
