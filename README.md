@@ -89,3 +89,26 @@ view.js
 })<br>
 }<br>
 <br>
+
+
+# pag.html
+
+&lt;body&gt;<br>
+	 &lt;script&gt;<br>
+	 
+	 jMsvc.include("index"); <br>
+	 
+	 &lt;/script&gt;<br>
+		<br>
+		
+		&lt;input type="button" value="galleria" onclick="jMsvc.call('galleria')"&gt;<br>
+		&lt;input type="button" value="servizi" onclick="jMsvc.call('servizi')"&gt;<br>
+		&lt;input type="button" value="contatto" onclick="jMsvc.call('contatto')"&gt;<br>
+		&lt;input type="button" value="home" onclick="jMsvc.call('home')"&gt;<br>
+		<br><br>
+			&lt;a  href="#galleria" value="galleria"  &gt;galleria&lt;/a&gt;<br>
+		&lt;a  href="#servizi" value="servizi"  &gt;servizi&lt;/a&gt;<br>
+		&lt;a  href="#contatto" value="contatto" &gt;contatto&lt;/a&gt;<br>
+		&lt;a  href="#home" value="home" &gt;home&lt;/a&gt;<br>
+		<br>
+		&lt;/body&gt;<br><br>
