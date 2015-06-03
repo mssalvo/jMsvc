@@ -4,7 +4,8 @@ View Controller JS
 
 # Example 
 controller.js <br>
-<b>jMsvc</b>.configHash(true).defaultAction("index")<br>
+<b>jMsvc</b>.configHash(true) <br>
+.defaultAction("index")<br>
 .configRoots({action:"index",url:"home"})<br>
 .configRoots({action:"gallery",url:"galleria"})<br>
 .configRoots({action:"service",url:"servizi"})<br>
@@ -60,7 +61,7 @@ view.js
 <br>
 <b>view.index</b> = function () {<br>
    return this.execute(function(){<br>
-  $("<div/>").html("Template index > home " +  request.get("test")).appendTo(document.body); <br>
+  $("&lt;div/&gt;").html("Template index > home " +  request.get("test")).appendTo(document.body); <br>
    })<br>
 }<br>
 <br>
@@ -69,21 +70,21 @@ view.js
 <b>view.gallery</b> = function () {<br>
  return this.execute(function(){
    <br>
-   $("<div/>").html("Template gallery > galleria ").appendTo(document.body);<br>
+   $("&lt;div/&gt;").html("Template gallery > galleria ").appendTo(document.body);<br>
 <br>
 })<br>
 }<br>
 <br>
 <b>view.service</b> = function () {<br>
  return this.execute(function(){<br>
- $("<div/>").html("Template service > servizi ").appendTo(document.body);<br>
+ $("&lt;div/&gt;").html("Template service > servizi ").appendTo(document.body);<br>
 <br>
 })<br>
 }<br>
 
 <b>view.contact</b> = function () {<br>
  return this.execute(function(){<br>
-   $("<div/>").html("Template contact > contatto ").appendTo(document.body);<br>
+  $("&lt;div/&gt;").html("Template contact > contatto ").appendTo(document.body);<br>
 <br>
 })<br>
 }<br>
