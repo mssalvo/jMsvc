@@ -10,6 +10,8 @@ var jMsvc = {
         $: jQuery,
         attrReq: [],
         attrSes: [],
+        ishash:0,
+        configHash:function(t){ return this.ishash = t, this},
         defaultAction: function(t) {
             return this.defaultUrl = t, this
         },
@@ -90,7 +92,8 @@ view.execute = function(t) {
         if (pos = s[e].indexOf("="), pos > 0 && t == s[e].substring(0, pos)) return s[e].substring(pos + 1);
     return ""
 }, jMsvc.queryAction = function() {
-    var t = unescape(window.location.search.substring(1)),
+    
+    var t = this.ishash ? unescape(window.location.hash.substring(1)) : unescape(window.location.search.substring(1)),
         i = 0;
     return t && (i = t.split("&")), i ? this.getRoot(i[0].split("=")[0]) : this.defaultUrl
 }, jMsvc.isFunction = function(t) {
@@ -141,13 +144,29 @@ view.execute = function(t) {
         },
         dataType: "json"
     })
-}, jMsvc.include = function() {
-    return this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc])].apply(view, [html]) : function() {
-        return !1
-    }
+}, 
+jMsvc.include = function() {
+    return this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc])].apply(view, [html]) : (function() { return !1 })()
 },  
-jMsvc.call=function(n){
-      return n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc])].apply(view, [html]) : function() {
-        return !1
-    } : (function(){})()
-}
+jMsvc.call = function(n){
+      return n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc])].apply(view, [html]) : (function() { return !1})() : (function() { return !1 })()
+};
+  
+    var _hashValue = '';
+
+    if ("onhashchange" in window){
+        $(window).bind( "hashchange", function(e) {
+          jMsvc.call(jMsvc.queryAction())
+        });
+    }
+    else{
+        _hashValue = window.location.hash;
+        setInterval ( function(){
+            if ( _hashValue != window.location.hash){
+                _hashValue = window.location.hash;
+               jMsvc.call(jMsvc.queryAction())
+            }
+        },500 );
+    }
+ 
+ 
