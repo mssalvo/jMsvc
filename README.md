@@ -94,29 +94,26 @@
 # 
 <b> pag.html</b>
 <code>
-	<body><br>
- <br>
+	<body> 
+ 
 	  <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script><br>
 		<script src="../jmsvc.js"></script><br>
 		<script src="app/view.js"></script><br>
 		<script src="app/controller.js"></script><br>
- <br>
-	 
-	 <script><br>
+ 
+	 <script> 
 	 jMsvc.include(); 
-	 </script><br><br>
-		<br>
+	 </script>
 		
-		<input type="button" value="galleria" onclick="jMsvc.call('galleria')"><br>
-		<input type="button" value="servizi" onclick="jMsvc.call('servizi')"><br>
-		<input type="button" value="contatto" onclick="jMsvc.call('contatto')"><br>
-		<input type="button" value="home" onclick="jMsvc.call('home')"><br>
-		<br>
-		<a href="#galleria" value="galleria">galleria</a><br>
-		<a href="#servizi" value="servizi">servizi</a><br>
-		<a href="#contatto" value="contatto">contatto</a><br>
-		<a href="#home" value="home">home</a><br>
-		<br>
-	 
-	</body><br>
-	</code>
+		<input type="button" value="galleria" onclick="jMsvc.call('galleria')"> 
+		<input type="button" value="servizi" onclick="jMsvc.call('servizi')"> 
+		<input type="button" value="contatto" onclick="jMsvc.call('contatto')"> 
+		<input type="button" value="home" onclick="jMsvc.call('home')">   
+		 
+		<a href="#galleria" value="galleria">galleria</a> 
+		<a href="#servizi" value="servizi">servizi</a> 
+		<a href="#contatto" value="contatto">contatto</a> 
+		<a href="#home" value="home">home</a> 
+
+	</body> 
+</code>
