@@ -8,7 +8,12 @@ controller.index = function () {
   return this.execute(function(){
   
 
-  request.set("test","ciaooa").get("pippo");
+  request.set("test","ciao") // page
+ 
+  session.set("test2","ciao2") // permanent
+ 
+  application.set("test3","ciao3") // permanent
+ 
    
    this.http({type: 'get',
         url: "./index.html",
@@ -27,10 +32,6 @@ controller.index = function () {
 
 }
 
-controller.event.index={
-    success:function(data){},
-    error:function(xhr, textStatus, thrownError){}
-}
 
 controller.gallery = function () {
  return this.execute(function(){
@@ -51,4 +52,18 @@ controller.contact = function () {
     return "contact";
 
 })
+
 }
+
+controller.convalida = function () {  // multi-action
+ return this.execute(function(){
+    if(request.get("test")=="1") return "contact";
+    if(request.get("test")=="2") return "service";
+    if(request.get("test")=="3") return "gallery";
+    
+    return "index";
+
+})
+
+}
+
