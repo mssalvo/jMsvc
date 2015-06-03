@@ -8,7 +8,7 @@ controller.index = function () {
   return this.execute(function(){
   
 
-  request.set("paperino2","ciaooa").get("paperino");
+  request.set("test","ciaooa").get("pippo");
    
    this.http({type: 'get',
         url: "./index.html",
