@@ -109,11 +109,16 @@
 		<input type="button" value="servizi" onclick="jMsvc.call('servizi')"> 
 		<input type="button" value="contatto" onclick="jMsvc.call('contatto')"> 
 		<input type="button" value="home" onclick="jMsvc.call('home')">   
-		 
+		 <b>OR</b><b>jMsvc.configHash(true) </b>
 		<a href="#galleria" value="galleria">galleria</a> 
 		<a href="#servizi" value="servizi">servizi</a> 
 		<a href="#contatto" value="contatto">contatto</a> 
 		<a href="#home" value="home">home</a> 
-
+                <b>OR</b><b>jMsvc.configHash(false) </b>
+                <a href="./?galleria" value="galleria">galleria</a> 
+		<a href="./?servizi" value="servizi">servizi</a> 
+		<a href="./?contatto" value="contatto">contatto</a> 
+		<a href="./?home" value="home">home</a>  
+                
 	</body> 
 </code>
