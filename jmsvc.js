@@ -11,9 +11,16 @@ var jMsvc = {
         attrReq: [],
         attrSes: [],
         ishash:0,
+        templates:{},
         configHash:function(t){ return this.ishash = t, this},
         defaultAction: function(t) {
             return this.defaultUrl = t, this
+        },
+        getTemplate: function(k) {
+            return this.templates[k];
+        },
+        setTemplate: function(k,v) {
+         this.templates[k]=v;
         },
         configRoots: function(t) {
             return this.isObject(t) && (this.isUndefined(t.action) && (t.action = this.defaultUrl), this.isUndefined(t.url) && (t.url = this.defaultUrl), this.root[t.url] = t.action), this
@@ -130,7 +137,8 @@ view.execute = function(t) {
                             for (var o = 0; o < s.length; o++);
         }
     }
-}, jMsvc.sendService = function(t, i, s) {
+}, 
+jMsvc.sendService = function(t, i, s) {
     $.ajax({
         type: "POST",
         url: i,
@@ -146,10 +154,29 @@ view.execute = function(t) {
     })
 }, 
 jMsvc.include = function() {
-    return this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc])].apply(view, [html]) : (function() { return !1 })()
+    var t= this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc])].apply(view, [html]) : (function() { return !1 })()
+    return this.isView(t).openView(t);
 },  
 jMsvc.call = function(n){
-      return n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc])].apply(view, [html]) : (function() { return !1})() : (function() { return !1 })()
+    var t= n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc])].apply(view, [html]) : (function() { return !1})() : (function() { return !1 })()
+   return this.isView(t).openView(t);
+},
+jMsvc.openView=function(o){
+    
+    if(this.isObject(o)){        
+        for(j in o){
+  this.$(this.getTemplate(j)).load(o[j]);  
+        }
+    }
+  return true;
+},
+jMsvc.isView=function(o){
+   if(this.isObject(o)){
+   Array.prototype.slice.call(document.querySelectorAll('[ms-view]')).forEach(function(el,i){  
+   jMsvc.setTemplate(el.getAttribute('ms-view'),el);
+ })
+ }
+ return this;
 };
   
     var _hashValue = '';
@@ -168,5 +195,3 @@ jMsvc.call = function(n){
             }
         },500 );
     }
- 
- 
