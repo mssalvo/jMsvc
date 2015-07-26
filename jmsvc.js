@@ -390,11 +390,11 @@ model.empty = function () {
                     (function (j, o, $this) {
                         $this.$($this.getTemplate(j)).load(o[j], function () {
 
-                           // jMsvc.isAnimation(jMsvc.getTemplate(j));
+                          
                             jMsvc.searchView(jMsvc.getTemplate(j), o);
                             jMsvc.writeProperty(jMsvc.getTemplate(j));
                             jMsvc.isforEach(jMsvc.getTemplate(j));
-                            //jMsvc.isAttached(jMsvc.getTemplate(j));
+                          
                             jMsvc.writeInclude(jMsvc.getTemplate(j));
 
 
@@ -426,10 +426,10 @@ model.empty = function () {
                             (function (j, vw, el) {
                                 jMsvc.$(el).load(vw[j], function () {
                                     
-                                   // jMsvc.isAnimation(el);
+                                  
                                     jMsvc.isforEach(el);
                                     jMsvc.writeProperty(el);
-                                    // jMsvc.isAttached(el);
+                                 
                                     jMsvc.writeInclude(el);
 
                                 });
@@ -549,7 +549,7 @@ model.empty = function () {
                         } else {
                             jMsvc.isforEach(el);
                             jMsvc.writeProperty(el);
-                            //jMsvc.isAttached(el);
+                      
                           
                         }
                     });
