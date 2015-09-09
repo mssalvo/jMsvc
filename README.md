@@ -134,7 +134,7 @@
 
 <code>
 <!DOCTYPE html>
-<html lang="en">
+ 
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
@@ -181,11 +181,11 @@
                 <div jms-include-replace="./index.html"></div>
             
 	</body>
-</html>
+ 
 
 <b> template body.html </b>
  
-    
+   	<body>  
    <table>
     // Cycling object auto  with attribute jms-foreach 
    <tr jms-foreach="auto">
@@ -195,7 +195,7 @@
     </tr>
    </table>
 
- 
+ 	</body> 
 
 </code>
  
