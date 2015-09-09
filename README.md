@@ -149,11 +149,11 @@
 
 	<!-- script references -->
 		<!--script src="http://code.jquery.com/jquery-2.1.4.min.js"></script-->
-		&lt;script src="../core/jquery.min.js"></script>
-		&lt;script src="../core/jmsvc.js"></script>
+		<script src="../core/jquery.min.js"></script>
+		<script src="../core/jmsvc.js"></script>
 		 
 		
-        &lt;script>
+        <script>
             
 	
               context.menu=[
@@ -173,9 +173,11 @@
 		<a for-property-href="menu.url" for-property-html="menu.desc"></a>
 		</li> 
 		</ul>
-
-                <div jms-include="./html/body.html"></div>
+		
+		//include template body.html
+                <div jms-include="./body.html"></div>
                 
+                //displays itself performs a replace html
                 <div jms-include-replace="./index.html"></div>
             
 	</body>
@@ -184,5 +186,16 @@
 
 </code>
 
+# 
+<b> template body.html </b>
+<code>
+    <table>
+    // Cycling object auto  with attribute jms-foreach 
+    <tr jms-foreach="auto">
+    //with displays for-property value of the object auto
+    <td for-property-html="auto.make_display"></td>
+    <td for-property-html="auto.make_country"></td>
+    </tr>
+    </table>
 
-
+</code>
