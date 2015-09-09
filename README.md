@@ -181,21 +181,30 @@
                 <div jms-include-replace="./index.html"></div>
             
 	</body>
- 
+</code> 
 
+#
 <b> template body.html </b>
- <br>
-   	< body>  <br>
-   < table><br>
-    // Cycling object auto  with attribute jms-foreach <br>
-   < tr jms-foreach="auto"><br>
-    //with displays for-property value of the object auto<br>
-    < td for-property-html="auto.make_display"></td><br>
-    < td for-property-html="auto.make_country"></td><br>
-    < /tr><br>
-   < /table><br>
+<code>
+
+
+   <body>
+   <table>
+    // Cycling object auto  with attribute jms-foreach 
+    
+   <tr jms-foreach="auto"><br>
+   
+    //with displays for-property value of the object auto
+    <td for-property-html="auto.make_display"></td>
+    
+    <td for-property-html="auto.make_country"></td>
+    
+    </tr>
+    
+   </table>
+   
 <br>
- 	< /body> <br>
+ 	</body> 
 
 </code>
  
