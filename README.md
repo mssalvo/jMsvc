@@ -190,7 +190,7 @@
 
    <body>
    <table>
-    // Cycling object auto  with attribute jms-foreach 
+    // Cycling object auto  with attribute jms-foreach<br>
    &lt;tr jms-foreach="auto">
   
     //with displays for-property value of the object auto
