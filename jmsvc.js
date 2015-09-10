@@ -122,30 +122,30 @@ model.empty = function () {
     jMsvc.attrReq[t] = i;
     return this;
 },
-        controller.get = function (url, fn, dataType, data, fne) {
-            return this.http({
+        controller.get = function (url, fn, dataType, datas, fne) {
+           this.http({
                 async: false,
                 type: "get",
                 url: url,
-                data: data || {},
+                data: datas || {},
                 success: function (data) {
                     if (fn) {
-                        fn(data)
+                    fn(data)
                     }
-                    return data;
+                   
                 },
                 error: function (xhr, textStatus, thrownError) {
                     if (fne) {
                         fne(xhr, textStatus, thrownError)
                     }
-                    return 0;
+                   
                 },
                 dataType: dataType || "json",
                 complete: function (data) {
-                    return data;
+                   
                 }
             })
-
+            return true;
         },
         controller.getJson = function (url, fn, fne) {
             return this.get(url, fn, "json", {}, fne);
@@ -167,11 +167,11 @@ model.empty = function () {
 }, application.getAttribute = function (t) {
     return this.get(t) || ""
 }, application.baseApplicationHistory = {}, application.getApplicationHistory = function () {
-    return "localStorage" in window ? String(localStorage.getItem("application_")).length > 5 ? window.eval("(" + localStorage.getItem("application_") + ")") : {} : String(window.name).length > 5 ? window.eval("(" + window.name + ")") : {}
+    return "localStorage" in window && !window.localStorage==undefined ? String(window.localStorage.getItem("application_")).length > 5 ? window.eval("(" + window.localStorage.getItem("application_") + ")") : {} : String(window.name).length > 5 ? window.eval("(" + window.name + ")") : {}
 }, application.setApplicationHistory = function () {
     var t = JSON.stringify(this.baseApplicationHistory, "");
-    if ("localStorage" in window)
-        localStorage.setItem("application_", t || "")
+    if ("localStorage" in window && !window.localStorage==undefined)
+        window.localStorage.setItem("application_", t || "")
     else
         window.name = t || ""
 
@@ -186,11 +186,16 @@ model.empty = function () {
     this.baseApplicationHistory = {};
     this.setApplicationHistory()
 }, session.baseSessionHistory = {}, session.getSessionHistory = function () {
-    return "sessionStorage" in window ? String(sessionStorage.getItem("session_")).length > 5 ? window.eval("(" + sessionStorage.getItem("session_") + ")") : {} : String(window.name).length > 5 ? window.eval("(" + window.name + ")") : {}
+     if("sessionStorage" in window && !window.sessionStorage==undefined && String(window.sessionStorage.getItem("session_")).length > 5){
+	    return window.eval("(" + window.sessionStorage.getItem("session_") + ")") 
+		} 
+     else if(String(window.name).length > 5){ 
+	 return window.eval("(" + window.name + ")") 
+	 } else{ return {} }
 }, session.setSessionHistory = function () {
     var t = JSON.stringify(this.baseSessionHistory, "");
-    if ("sessionStorage" in window)
-        sessionStorage.setItem("session_", t || "")
+    if ("sessionStorage" in window && !window.sessionStorage==undefined)
+        window.sessionStorage.setItem("session_", t || "")
     else
         window.name = t || ""
 }, session.set = function (t, i) {
@@ -295,7 +300,7 @@ model.empty = function () {
                 obj = jmsEvent[k];
 
                 nEvt = evt.split(" ");
-
+				obj.removeAttribute('jms-event')
                 for (s in nEvt) {
                     (function (t, act) {
                         switch (t) {
@@ -394,7 +399,6 @@ model.empty = function () {
                             jMsvc.searchView(jMsvc.getTemplate(j), o);
                             jMsvc.writeProperty(jMsvc.getTemplate(j));
                             jMsvc.isforEach(jMsvc.getTemplate(j));
-                          
                             jMsvc.writeInclude(jMsvc.getTemplate(j));
 
 
@@ -414,7 +418,7 @@ model.empty = function () {
 
             }
             (function () {
-                return jMsvc.writeInclude(document)
+                return  jMsvc.isforEach(document) && jMsvc.writeProperty(document) && jMsvc.writeInclude(document) && jMsvc.initHtmlEvent(document);
             })();
             return this;
         },
@@ -425,11 +429,9 @@ model.empty = function () {
                         if (el.getAttribute("jms-view") == j) {
                             (function (j, vw, el) {
                                 jMsvc.$(el).load(vw[j], function () {
-                                    
-                                  
+
                                     jMsvc.isforEach(el);
                                     jMsvc.writeProperty(el);
-                                 
                                     jMsvc.writeInclude(el);
 
                                 });
@@ -491,19 +493,21 @@ model.empty = function () {
         },
         jMsvc.isforEach = function (o) {
             var forEachs = [];
-            this.initHtmlEvent(o);
-
+            //this.initHtmlEvent(o);
             this.initHtmlController(o);
 
             Array.prototype.slice.call(o.querySelectorAll('[jms-foreach]')).forEach(function (el, i) {
                 forEachs[el.getAttribute('jms-foreach')] = {attr: el.getAttribute('jms-foreach'), exp: [], obj: el};
+				el.removeAttribute('jms-foreach');
+				jMsvc.isforEach(el)
             })
             var fork = forEachs;
             for (x in fork) {
-                for (t in context[fork[x]['attr']]) {
+             
+	for (t in context[fork[x]['attr']]) {	
                     var clone = this.$(fork[x]['obj']).clone().get(0);
                     var aryExp = Array.prototype.slice.call(clone.getElementsByTagName('*'));
-
+                    jMsvc.initHtmlEvent(clone);
                     if (!aryExp.length) {
                         fork[x]['exp'] = [clone];
                     } else {
@@ -545,11 +549,11 @@ model.empty = function () {
                         if (el.getAttribute('jms-include-replace')) {
                             
                             jMsvc.$(el).html(jMsvc.$(el).html().replace(/</ig, '&lt;').replace(/>/ig, '&gt;').replace(/\ /ig, '&nbsp;').replace(/\n/ig, '<br>'));
-                           
+                            el.removeAttribute('jms-include-replace');
                         } else {
                             jMsvc.isforEach(el);
                             jMsvc.writeProperty(el);
-                      
+                            el.removeAttribute('jms-include');
                           
                         }
                     });
@@ -622,6 +626,27 @@ model.empty = function () {
 
             return true;
         },
+		jMsvc.removeProperty=function(ob,reg){
+		if(ob && ob.attributes){
+		var u=[];
+		for (j=0;j< ob.attributes.length;j++) {
+				(function (i, a){
+					if (a.attributes[i] && reg.test(a.attributes[i].name)) { 
+						u.push(a.attributes[i].name);
+						
+				}
+				})(j,ob) 
+					
+			}
+		for (y=0;y< u.length;y++) {
+				(function (i, a){	
+				a.removeAttribute(u[i]);
+				})(y,ob) 
+					
+			}	
+			 
+		}
+		},
         jMsvc.propert = function (prop) {
             p = prop.split(".");
             if (p.length) {
@@ -632,14 +657,15 @@ model.empty = function () {
         },
         jMsvc.updateObject = function (elemExp, elementForEach, t) {
             if (elemExp) {
-                for (att in elemExp.attributes) { //for attr
+                for (att=0;att< elemExp.attributes.length;att++) { //for attr
                     (function (att, elemExp, t) {
                         if (elemExp.attributes[att] && /(for-property|for-property\-.*)+$/.test(elemExp.attributes[att].name)) { //isExp
-                            var matchAttr = elemExp.attributes[att].name.split('for-property-')// match(/for-property-\ *(\w+)\s*\/?(for-property-.*\1.|)/);
+                            var matchAttr = elemExp.attributes[att].name.split('for-property-')
                             exps = elemExp.attributes[att].value.split(',');
                             
                             jMsvc.isFadeOut(elemExp);
                             jMsvc.isFadeIn(elemExp);
+							
                             if (exps) {//
                                 for (e in exps) { // for method
                                     if (elemExp['nodeType'] == 1) {
@@ -667,7 +693,7 @@ model.empty = function () {
                                                                 this.$(elemExp).before(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(context[elementForEach][t][exps[e].split('.')[1]]) ? context[elementForEach][t][exps[e].split('.')[1]] : document.createTextNode(context[elementForEach][t][exps[e].split('.')[1]]))
                                                                 break;
                                                             case 'append':
-                                                                this.$(elemExp).html(context[elementForEach][t][exps[e].split('.')[1]])
+                                                                this.$(elemExp).append(context[elementForEach][t][exps[e].split('.')[1]])
                                                                 break;
                                                             case 'text':
                                                                 this.$(elemExp).text(context[elementForEach][t][exps[e].split('.')[1]])
@@ -730,7 +756,7 @@ model.empty = function () {
                                                 break;
 
                                             default:
-                                                if (exps[e].split('.').length < 2 && context[exps[e].split('.')[0]]) {
+                                                if (exps[e].split('.').length < 2 ){ 
                                                     if (elemExp['nodeName'] == 'INPUT') {
                                                         if (matchAttr[1] && matchAttr[1] == "value") {
                                                             elemExp[matchAttr[1]] = context[exps[e].split('.')[0]]
@@ -754,7 +780,7 @@ model.empty = function () {
                                                                     this.$(elemExp).before(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(context[exps[e].split('.')[0]]) ? context[exps[e].split('.')[0]] : document.createTextNode(context[exps[e].split('.')[0]]))
                                                                     break;
                                                                 case 'append':
-                                                                    this.$(elemExp).html(context[exps[e].split('.')[0]])
+                                                                    this.$(elemExp).append(context[exps[e].split('.')[0]])
                                                                     break;
                                                                 case 'text':
                                                                     this.$(elemExp).text(context[exps[e].split('.')[0]])
@@ -815,8 +841,8 @@ model.empty = function () {
                                                         }
                                                     }
                                                 }
-                                                else if (exps[e].split('.').length > 1 && context[exps[e].split('.')[0]][exps[e].split('.')[1]]) {
-                                                }
+                                                else if (exps[e].split('.').length > 1){ 
+                                                
                                                 if (elemExp['nodeName'] == 'INPUT') {
 
                                                     if (matchAttr[1]) {
@@ -900,8 +926,9 @@ model.empty = function () {
                                                         this.$(elemExp).append(context[exps[e].split('.')[0]][exps[e].split('.')[1]])
                                                     }
                                                 }
-
-
+                                         
+                                        }//
+                                        
                                         }
 
 
@@ -912,25 +939,27 @@ model.empty = function () {
                          
                     })(att, elemExp, t)
                 }//for attr
+			 jMsvc.removeProperty(elemExp,new RegExp(/(for-property|for-property\-.*)+$/));
             }
         },
         jMsvc.updateProperty = function (elemExp) {
 
             if (elemExp) {
-                for (att in elemExp.attributes) { //for attr  match(/jms-property-\ *(\w+)\s*\/?(jms-property-.*\1.|)/)
+                for (att=0;att< elemExp.attributes.length;att++) {  
                     (function (elemExp, attribute) {
                         if (attribute && /(jms-property|jms-property-.*)+$/.test(attribute.name)) { //isExp
 
-                            var matchAttr = attribute.name.split('jms-property-')//match(/jms-property-\.*(\w+)\s*\/?(jms-property-.*\1.|)/);
+                            var matchAttr = attribute.name.split('jms-property-') 
 
                             jMsvc.isFadeOut(elemExp);
                             jMsvc.isFadeIn(elemExp);
                             var exps = attribute.value.split(',');
+							
                             if (exps) {//
                                 for (var e in exps) { // for method
                                     if (elemExp['nodeType'] == 1) {
 
-                                        if (exps[e].split('.').length < 2 && context[exps[e].split('.')[0]]) {
+                                        if ((exps[e].split('.')).length < 2 ){ 
                                             if (elemExp['nodeName'] == 'INPUT') {
                                                 if (matchAttr[1]) {
                                                     this.$(elemExp).attr(matchAttr[1], context[exps[e].split('.')[0]]);
@@ -951,7 +980,9 @@ model.empty = function () {
                                                             this.$(elemExp).before(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(context[exps[e].split('.')[0]]) ? context[exps[e].split('.')[0]] : document.createTextNode(context[exps[e].split('.')[0]]))
                                                             break;
                                                         case 'append':
-                                                            this.$(elemExp).html(context[exps[e].split('.')[0]])
+                                                            this.$(elemExp).append(context[exps[e].split('.')[0]])
+                                                            if(exps.length>1)
+                                                             this.$(elemExp).append(" ");
                                                             break;
                                                         case 'text':
                                                             this.$(elemExp).text(context[exps[e].split('.')[0]])
@@ -998,6 +1029,8 @@ model.empty = function () {
                                                             break;
                                                         case 'append':
                                                             this.$(elemExp).append(context[exps[e].split('.')[0]])
+                                                            if(exps.length>1)
+						       this.$(elemExp).append(" ");
                                                             break;
                                                         case 'text':
                                                             this.$(elemExp).text(context[exps[e].split('.')[0]])
@@ -1010,16 +1043,16 @@ model.empty = function () {
                                                 }
                                             }
                                         }
-                                        else if (exps[e].split('.').length > 1 && context[exps[e].split('.')[0]][exps[e].split('.')[1]]) {
-                                        }
-                                        if (elemExp['nodeName'] == 'INPUT') {
+                                        else if ((exps[e].split('.')).length > 1 ){  
+                                        
+                                        if (elemExp['nodeName'].toUpperCase() == 'INPUT') {
                                             if (matchAttr[1]) {
                                                 this.$(elemExp).attr(matchAttr[1], context[exps[e].split('.')[0]][exps[e].split('.')[1]]);
                                             }
                                             else {
                                                 elemExp['value'] = context[exps[e].split('.')[0]][exps[e].split('.')[1]];
                                             }
-                                        } else if (elemExp['nodeName'] == 'A') {
+                                        } else if (elemExp['nodeName'].toUpperCase() == 'A') {
                                             if (matchAttr[1]) {
                                                 switch (matchAttr[1]) {
                                                     case 'html':
@@ -1032,8 +1065,10 @@ model.empty = function () {
                                                         this.$(elemExp).before(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(context[exps[e].split('.')[0]][exps[e].split('.')[1]]) ? context[exps[e].split('.')[0]][exps[e].split('.')[1]] : document.createTextNode(context[exps[e].split('.')[0]][exps[e].split('.')[1]]))
                                                         break;
                                                     case 'append':
-                                                        this.$(elemExp).html(context[exps[e].split('.')[0]][exps[e].split('.')[1]])
-                                                        break;
+                                                        this.$(elemExp).append(context[exps[e].split('.')[0]][exps[e].split('.')[1]])
+                                                       if(exps.length>1)
+						this.$(elemExp).append(" ");
+						break;
                                                     case 'text':
                                                         this.$(elemExp).text(context[exps[e].split('.')[0]][exps[e].split('.')[1]])
                                                         break;
@@ -1041,13 +1076,11 @@ model.empty = function () {
                                                         this.$(elemExp).attr(matchAttr[1], context[exps[e].split('.')[0]][exps[e].split('.')[1]])
                                                 }
 
-
-                                                this.$(elemExp).attr(matchAttr[1], context[exps[e].split('.')[0]][exps[e].split('.')[1]])
                                             }
                                             else {
                                                 this.$(elemExp).html(context[exps[e].split('.')[0]][exps[e].split('.')[1]])
                                             }
-                                        } else if (elemExp['nodeName'] == 'OPTION') {
+                                        } else if (elemExp['nodeName'].toUpperCase() == 'OPTION') {
                                             if (matchAttr[1]) {
                                                 switch (matchAttr[1]) {
                                                     case 'html':
@@ -1095,7 +1128,7 @@ model.empty = function () {
                                                 this.$(elemExp).append(context[exps[e].split('.')[0]][exps[e].split('.')[1]])
                                             }
                                         }
-
+                                        }// f    
 
                                     }
                                 }// for method
@@ -1104,6 +1137,7 @@ model.empty = function () {
                          
                     })(elemExp, elemExp.attributes[att])
                 }//for attr
+		jMsvc.removeProperty(elemExp,new RegExp(/(jms-property|jms-property-.*)+$/));	
             }
         }, _hashValue = '';
 
