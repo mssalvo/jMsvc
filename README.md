@@ -183,27 +183,28 @@
 	</body>
 </code> 
 
-#
-<b> template body.html </b>
+
+###  template body.html 
+========================
 <code>
 
 
-   <body>
-   <table>
-    // Cycling object auto  with attribute jms-foreach<br>
-   &lt;tr jms-foreach="auto">
+
+  ` <body> <table>`
+` Cycling object auto  with attribute jms-foreach`
+  ` <tr jms-foreach="auto">`
   
-    //with displays for-property value of the object auto
-    <td for-property-html="auto.make_display"></td>
+   ` //with displays for-property value of the object auto`
+   ` <td for-property-html="auto.make_display"></td>`
     
-    <td for-property-html="auto.make_country"></td>
+    `<td for-property-html="auto.make_country"></td>`
     
-    </tr>
+   ` </tr>`
     
-   </table>
+   `</table>`
    
-<br>
- 	</body> 
+`<br>`
+ 	`</body> `
 
 </code>
  
