@@ -189,23 +189,25 @@
 <code>
 
 
-
-  ` <body> <table>`
-` Cycling object auto  with attribute jms-foreach`
-  ` <tr jms-foreach="auto">`
-  
-   ` //with displays for-property value of the object auto`
-   ` <td for-property-html="auto.make_display"></td>`
-    
-    `<td for-property-html="auto.make_country"></td>`
-    
-   ` </tr>`
-    
-   `</table>`
+```
+   <body> 
    
-`<br>`
- 	`</body> `
+  <table>
+ Cycling object auto  with attribute jms-foreach
+ <tr jms-foreach="auto">
+  
+   //with displays for-property value of the object auto
+    <td for-property-html="auto.make_display"></td>
+    
+    <td for-property-html="auto.make_country"></td>
+    
+    </tr>
+    
+   </table>
+   
 
+ 	</body> 
+```
 </code>
  
  
