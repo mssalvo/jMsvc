@@ -1,5 +1,623 @@
-# jMsvc
-<b style="color:green">View Controller JS</b>
+# jMsvc.js
+ 
+
+
+## Quick Examples
+
+    	<script>
+    
+   
+ 	context.menu=[
+                               
+	{url:'../exampleEvent/index.html',desc:'Example Event'},
+                               
+	{url:'../exampleForeach/index.html',desc:'Example Foreach'},
+                               
+	{url:'../exampleProperty/index.html',desc:'Example Property'},
+                               
+	{url:'../exampleInclude/index.html',desc:'Example Include'}
+  ];
+	  
+
+	</script>
+
+ ```
+
+	<ul>
+                
+	<li jms-foreach="menu">
+		
+	<a for-property-href="menu.url" for-property-html="menu.desc"></a>
+		
+	</li> 
+		
+	</ul>
+
+```
+
+
+## Download
+
+Releases are available for download from
+[GitHub](https://github.com/mssalvo/jMsvc/archive/master.zip).
+
+
+
+__Development:__ [jmsvc.js](https://github.com/mssalvo/jMsvc/raw/master/jmsvc.js) 
+
+
+
+<b>In the Browser</b>
+
+	Usage:
+```
+
+    <script type="text/javascript" src="jmsvc.js"></script>
+  
+```
+
+__Documentation__
+
+### jMsvc Setting
+
+
+* [configHash](#configHash)
+* [defaultAction](#defaultAction)
+* [configRoots](#configRoots)
+
+
+
+-------------------------------------------------
+
+
+
+### jMsvc Utils
+
+* [application](#application)
+* [request](#request)
+* [session](#session)
+* [getJson](#getJson)
+* [getHtml](#getHtml)
+* [getText](#getText)
+* [http](#http)
+
+-------------------------------------------------
+
+### jMsvc Object
+
+
+* [controller](#controller)
+* [model](#model)
+* [view](#view)
+* [context](#context)
+
+
+-------------------------------------------------
+
+
+### Control html
+
+* [jms-foreach](#jms-foreach)
+* [for-property-*](#for-property)
+* [jms-property-*](#jms-property)
+* [jms-view](#jms-view)
+* [jms-include](#jms-include)
+* [jms-include-replace](#jms-include-replace)
+* [jms-event](#jms-event)
+
+
+
+
+---------------------------------------------------
+
+
+<a name="application" />
+### application 
+
+application is reference to localStorage object
+
+__Example__
+
+	
+	application.set(key|value)
+
+	application.get(key)	
+
+
+-------------------------------------------------
+
+
+<a name="session" />
+### session
+
+session is reference to sessionStorage object
+
+__Example__
+
+	
+	session.set(key|value)
+
+	session.get(key)	
+
+
+-------------------------------------------------
+
+
+
+<a name="request" />
+### request
+
+
+
+__Example__
+
+	
+	request.set(key|value)
+
+	request.get(key)	
+
+
+-------------------------------------------------
+
+
+
+
+<a name="getJson" />
+### getJson
+
+getJson is reference to jMsvc.http
+
+
+__Example__
+
+	
+	 controller.getJson("url",function(data){ })
+
+
+-------------------------------------------------
+
+<a name="getHtml" />
+### getHtml
+
+getHtml is reference to jMsvc.http
+
+
+__Example__
+
+	
+	 controller.getHtml("url",function(data){ })
+
+
+-------------------------------------------------
+
+<a name="getText" />
+### getText
+
+getText is reference to jMsvc.http
+
+__Example__
+
+	
+	 controller.getText("url",function(data){ })
+
+
+-------------------------------------------------
+
+
+<a name="http" />
+### http
+
+http is reference to jQuery.ajax
+
+__Example__
+
+	
+	 http(url)
+
+	.success(function(data){ })
+	
+	//optional
+
+	* .error(function(jqXHR, textStatus, errorThrown){ })
+	* .complete(function(jqXHR, textStatus, errorThrown){ })	
+	* .setAsync(|Boolean|)
+	* .setType(|String|)
+	.setDataType(|String|)
+	.setData(|PlainObject or String or Array|)
+	.setTimeout(|Number|)
+	.setStatusCode(|PlainObject|)
+	.setXhrFields(|PlainObject|)
+	.setBeforeSend(|value|)
+	.setCache(|Boolean|)
+	.setContentType(|Boolean or String|)
+	.setContext(|PlainObject|)
+	.setCrossDomain(|Boolean|)
+	.setDataFilter(|Function|)
+	.setProcessData(|Boolean|)
+	.setScriptCharset(|String|)
+	
+	
+	
+	
+	
+	
+	
+	
+-------------------------------------------------
+
+
+
+
+
+
+<a name="defaultAction" />
+### Setting defaultAction
+
+
+
+__Example__
+
+
+	jMsvc.defaultAction("index")
+
+	
+
+
+-------------------------------------------------
+
+
+<a name="configHash" />
+### Setting configHash(true|false)
+
+
+
+__Example__
+
+	
+	jMsvc.configHash(true)
+
+
+
+
+-------------------------------------------------
+
+
+
+<a name="configRoots" />
+### Setting configRoots({action|url})
+
+
+
+__Example__
+
+
+	jMsvc.configRoots({action:"index",url:"home"})
+	
+.configRoots({action:"gallery",url:"galleria"})
+	.configRoots({action:"service",url:"servizi"})
+	.configRoots({action:"contact",url:"contatto"})	
+
+
+-------------------------------------------------
+
+
+
+
+<a name="controller" />
+### controller logic
+
+
+__Example__
+
+ 	controller.home = function () {
+	
+ 
+	return this.execute(function(){
+    	
+	//do something	
+	
+
+	//returns the name of the view
+	return "contact";
+
+	})
+
+
+	}
+
+
+
+
+-------------------------------------------------
+
+
+
+
+
+<a name="controller" />
+### controller logic
+
+
+__Example__
+
+ 	controller.home = function () {
+	
+ 
+	return this.execute(function(){
+    	
+	//do something	
+	//type	
+	context.body={object body}
+	context.menu={object menu}
+	context.footer={object footer}
+	context.banner={object banner}
+
+
+	//returns the name of the view
+	return "home";
+
+	})
+
+
+	}
+
+
+
+
+-------------------------------------------------
+
+
+<a name="view" />
+### view logic
+
+
+__Example__
+
+ 	view.home = function () {
+	
+ 
+	return this.execute(function(){
+    	
+	//do something	
+	
+
+	//returns the object of the jms-view | false
+		
+		Object(name-view|url-template)
+	
+	return {
+            
+		banner:'./html/banner.html',
+            
+		menu:'./html/menu.html',
+            
+		body:'./html/body.html',
+            
+		footer:'./html/footer.html'
+            
+		}
+
+	})
+
+
+	}
+
+
+
+
+-------------------------------------------------
+
+
+<a name="model" />
+### model object
+
+
+__Example__
+
+ 	model.myEventInput = function () {
+	
+ 
+	return this.execute(function(){
+    	
+	 alert(this.value)
+	 
+
+	})
+
+
+	}
+
+
+
+
+---------------------------------------------------
+
+
+<a name="jms-foreach" />
+### jms-foreach
+Definisce un modello per ciascuno dei dati di una collezione
+
+Defining a pattern for each of the data of a collection
+
+
+__Example__
+
+```
+
+ <table class="col-md-12">
+       <tr jms-foreach="documentation" class="panel panel-info">
+            <td class="col-md-12 panel-default">
+               
+                <a for-property-href="documentation.url" for-property-onclick="documentation.click" >
+		<h4 for-property="documentation.nome"></h4>
+		</a>
+            
+            </td>  
+            
+        </tr>
+    </table>
+
+```
+
+-------------------------------------------------
+
+<a name="for-property" />
+### for-property
+Definisce gli attributi dell'elemento html che saranno modificati con il nuovo valore iniettato all'interno di un ciclo 
+
+jms-foreach
+
+It defines the attributes of html that will be modified with the new value injected into a cycle jms-foreach
+
+
+__Example__
+
+```
+
+ 	<tr jms-foreach="documentation" class="panel panel-info">
+            <td class="col-md-12 panel-default">
+               
+                <a for-property-href="documentation.url" for-property-onclick="documentation.click" >
+		<h4 for-property="documentation.nome"></h4>
+		</a>
+            
+            </td>  
+            
+        </tr>
+
+
+```
+
+-------------------------------------------------
+
+<a name="jms-property" />
+### jms-property
+Definisce gli attributi dell'elemento html che saranno modificati con il nuovo valore iniettato
+
+It defines the attributes of html that will be modified with the new value injected
+
+* [jms-property](#)
+* [jms-property-*](#)
+* [jms-property-html](#)
+* [jms-property-text](#)
+* [jms-property-value](#)
+* [jms-property-style](#)
+* [jms-property-append](#)
+* [jms-property-onclick](#)
+* [jms-property-myProperty](#)
+* [jms-property-etc..etc](#)
+
+
+__Example__
+
+```
+
+ <a jms-property-href="jsmdoc.url" jms-property="jsmdoc.nome"></a>
+
+
+```
+
+
+-------------------------------------------------
+
+
+<a name="jms-view" />
+### jms-view
+Definisce l'elemento che ospita l'html di una view template o model
+
+It defines the element which houses the html view of a template or model
+
+
+__Example__
+
+```
+
+  <div jms-view="body"></div>
+
+  <div jms-view="footer"></div>
+
+```
+
+
+-------------------------------------------------
+
+
+
+<a name="jms-include" />
+### jms-include
+Definisce l'oggetto che Include l'HTML di un'applicazione pagina html o model
+
+It defines the object that includes the HTML application html page or model
+
+
+__Example__
+
+```
+
+<div jms-include="./html/documentation_left.html"> </div>   
+
+
+```
+
+-------------------------------------------------
+
+
+<a name="jms-include-replace" />
+### jms-include-replace
+Definisce l'oggetto che Include l'HTML esegue un replace di un'applicazione pagina html o model
+
+It defines the object that includes the HTML performs an html page or replace an application model
+shows the html page included
+
+__Example__
+
+
+```
+
+<div jms-include-replace="./html/documentation_left.html"> </div>   
+
+
+```
+-------------------------------------------------
+
+<a name="jms-event" />
+### jms-event
+
+Definisce il tipo di evento associato all'elemento e il tipo di controllo da associare all'evento - tipi ammessi > M-V-C-
+
+MVC
+
+It defines the type of event associated with the item and the type of control to associate with the event - types allowed> 
+
+MVC-MVC
+
+* [M]
+* [V]
+* [C]
+* [MVC]
+
+
+__Example__
+
+```
+
+<input type="button" jms-event="click:M@documentation" value="go!">
+
+<input type="button" jms-event="click:V@documentation" value="go!">
+
+<input type="button" jms-event="click:C@documentation" value="go!">
+
+<input type="button" jms-event="click:MVC@documentation" value="go!">
+
+
+```
+
+-------------------------------------------------
+
+
+
+
+<b>View Controller JS</b>
 
 
 # Example 
@@ -7,8 +625,6 @@
 <b>jMsvc</b>.configHash(true) <br>
 .defaultAction("index")<br>
 .configRoots({action:"index",url:"home"})<br>
-.configRoots({action:"gallery",url:"galleria"})<br>
-.configRoots({action:"service",url:"servizi"})<br>
 .configRoots({action:"contact",url:"contatto"})<br>
 <br><br>
 <b> controller.index</b> = function () {<br>
@@ -17,37 +633,12 @@
 <br>
   <b> request.set("test","Hello")</b>;<br>
    <br>
-   this.http({type: 'get',<br>
-        url: "./index.html",<br>
-        crossDomain: true,<br>
-        data:{},<br>
-        success: function(data) {<br>
-         alert(data)<br>
-        },<br>
-        error: function(xhr, textStatus, thrownError) {<br>
-       alert(xhr)<br>
-        },<br>
-        dataType: "html"})<br>
-        <br>
+  this.get("http://myurl.com").success(function(data){ context.test=data;})
     return "index";<br>
 })<br>
 <br>
 }<br>
 
-<br>
-<b>controller.gallery</b> = function () {<br>
- return this.execute(function(){<br>
-    return "gallery";<br>
-<br>
-})<br>
-}<br>
-<br>
-<b> controller.service </b>= function () {<br>
- return this.execute(function(){<br>
-    return "service";<br>
-<br>
-})<br>
-}<br>
 <br>
 <b> controller.contact </b>= function () {<br>
  return this.execute(function(){<br>
@@ -61,34 +652,11 @@
 <br>
 <b>view.index</b> = function () {<br>
    return this.execute(function(){<br>
-  $("&lt;div/&gt;").html("Template index > home " +  request.get("test")).appendTo(document.body); <br>
+  return { body:'./html/body.html', }
    })<br>
 }<br>
 <br>
  <br>
-
-<b>view.gallery</b> = function () {<br>
- return this.execute(function(){
-   <br>
-   $("&lt;div/&gt;").html("Template gallery > galleria ").appendTo(document.body);<br>
-<br>
-})<br>
-}<br>
-<br>
-<b>view.service</b> = function () {<br>
- return this.execute(function(){<br>
- $("&lt;div/&gt;").html("Template service > servizi ").appendTo(document.body);<br>
-<br>
-})<br>
-}<br>
-
-<b>view.contact</b> = function () {<br>
- return this.execute(function(){<br>
-  $("&lt;div/&gt;").html("Template contact > contatto ").appendTo(document.body);<br>
-<br>
-})<br>
-}<br>
-<br>
 
 
 # 
