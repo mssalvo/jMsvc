@@ -94,9 +94,9 @@ __Documentation__
 
 -------------------------------------------------
 
-<a name="controlHtml />
+<a name="controlHtml"/> 
 ### Control html
-
+ 
 * [jms-foreach](#jms-foreach)
 * [for-property-*](#for-property)
 * [jms-property-*](#jms-property)
@@ -497,16 +497,16 @@ __Example__
 
 It defines the attributes of html that will be modified with the new value injected
 
-[jms-property](#jms-property)
-[jms-property-*](#jms-property)
-[jms-property-html](#jms-property)
-[jms-property-text](#jms-property)
-[jms-property-value](#jms-property)
-[jms-property-style](#jms-property)
-[jms-property-append](#jms-property)
-[jms-property-onclick](#jms-property)
-[jms-property-myProperty](#jms-property)
-[jms-property-etc..etc](#jms-property)
+* [jms-property](#jms-property)
+* [jms-property-*](#jms-property)
+* [jms-property-html](#jms-property)
+* [jms-property-text](#jms-property)
+* [jms-property-value](#jms-property)
+* [jms-property-style](#jms-property)
+* [jms-property-append](#jms-property)
+* [jms-property-onclick](#jms-property)
+* [jms-property-myProperty](#jms-property)
+* [jms-property-etc..etc](#jms-property)
 
 
 __Example__
