@@ -35,7 +35,6 @@ var jMsvc = {
     expAction: new RegExp(/@\ *(\w+)\s*\/?(@.*\1.|)/),
     defaultUrl: "empty",
     root: [],
-    http: jQuery.ajax,
     $: jQuery,
     attrReq: [],
     attrSes: [],
@@ -89,8 +88,28 @@ var jMsvc = {
     },
     getRoot: function (t) {
         return this.isUndefined(t) ? this.defaultUrl : this.isUndefined(this.root[t]) && !this.isUndefined(t) ? this.isFunction(controller[t]) ? t : this.defaultUrl : this.isUndefined(this.root[t]) ? this.defaultUrl : this.root[t]
-    }
+    },
+     httpRequest:function(o){
+     this.async=false;
+     this.type= "GET";
+     this.dataType="jsonp";
+     this.url=o||null;
+     this.data=null;
+     this.statusCode=null;
+     this.timeout=null;
+     this.xhrFields=null;
+     this.beforeSend=null;
+     this.cache=null;
+     this.contentType=null;
+     this.context=null;
+     this.crossDomain=null;
+     this.dataFilter=null;
+     this.processData=null;
+     this.scriptCharset=null;
+     this.xr=null;
+     }       
 },
+       
 act = function () {
 },
         model = jMsvc.model.prototype,
@@ -100,7 +119,169 @@ act = function () {
         context = act.prototype,
         request = jMsvc.getRequest.prototype,
         session = jMsvc.getSession.prototype,
-        application = jMsvc.getApplication.prototype;
+        application = jMsvc.getApplication.prototype,
+        http=jMsvc.httpRequest.prototype;
+
+/*
+ * Type: String
+ */ 
+http.get=function(url){
+    this.url=url;
+    return this;
+},
+/*
+ * Type: Boolean
+ */          
+http.setAsync=function(a){
+    this.async=a;
+    return this;
+},    
+    
+/* type (default: 'GET')
+ * Type: String   
+ */
+http.setType=function(a){
+    this.type=a;
+     return this;
+},
+/*
+ * dataType (default: Intelligent Guess (xml, json, jsonp, script, or html))
+ * Type: String
+ */    
+http.setDataType=function(a){
+     this.dataType=a;
+     return this;
+},
+/* 
+ * Type: PlainObject or String or Array
+ * @param {type} a
+ * @returns {httpRequest}
+ */         
+http.setData=function(a){
+     this.data=a;
+     return this;
+},
+/* 
+ * Type: Number
+ */        
+http.setTimeout=function(a){
+     this.timeout=a;
+     return this;
+},
+ /* 
+  * Type: PlainObject
+  *   statusCode: {
+  *  404: function() {
+  *    alert( "page not found" );
+  *  }
+  * }
+  */       
+ http.setStatusCode=function(a){
+     this.statusCode=a;
+     return this;
+},  
+/* 
+ * Type: PlainObject
+ *  xhrFields: {
+ *     withCredentials: true
+ *  }
+ */        
+http.setXhrFields=function(a){
+     this.xhrFields=a;
+     return this;
+},
+   /*
+    * Type: Function( jqXHR jqXHR, PlainObject settings )
+    * @param {type} a
+    * @returns {httpRequest}
+    */
+       
+http.setBeforeSend=function(a){
+     this.beforeSend=a;
+     return this;
+}, 
+/*
+ * cache (default: true, false for dataType 'script' and 'jsonp')
+ *  Type: Boolean
+ * @param {type} a
+ * @returns {httpRequest}
+ */      
+  http.setCache=function(a){
+     this.cache=a;
+     return this;
+},  
+/* contentType (default: 'application/x-www-form-urlencoded; charset=UTF-8')
+ * Type: Boolean or String 
+ */
+   http.setContentType=function(a){
+     this.contentType=a;
+     return this;
+},  
+ /*
+  * Type: PlainObject
+  * context: document.body    
+  * .success(function() {
+  * $( this ).addClass( "done" ); }
+  */
+   http.setContext=function(a){
+     this.context=a;
+     return this;
+},  
+  /* 
+   * Type: Boolean 
+   */     
+   http.setCrossDomain=function(a){
+     this.crossDomain=a;
+     return this;
+},  
+/*  
+ * Type: Function( String data, String type ) => Anything 
+ */
+   http.setDataFilter=function(a){
+     this.dataFilter=a;
+     return this;
+},
+/*        
+ * processData (default: true)
+ * Type: Boolean   
+ */   
+   http.setProcessData=function(a){
+     this.processData=a;
+     return this;
+},  
+/* 
+ * Type: String 
+ */       
+   http.setScriptCharset=function(a){
+     this.scriptCharset=a;
+     return this;
+},  
+
+http.setting=function(){
+   var options={}; 
+    this.url= [this.url, (this.dataType=="jsonp" ||  this.dataType=="json")? this.url.indexOf("callback=")?"":this.url.indexOf("?")?"&callback=?":"?callback=?":""].join("");
+    for(i in this){
+      if(this[i]!=null && !(typeof this[i] == typeof Function)){ 
+      options[i]=this[i];   
+      } 
+    }
+    this.xr = jMsvc.$.ajax(options)
+     return this;
+},
+http.success=function(fn){
+    this.setting(); 
+    this.xr.done(function(data){fn(data)})  
+     return this;
+},  
+http.error=function(){
+   this.xr.fail(function( jqXHR, textStatus, errorThrown ){fn(jqXHR, textStatus, errorThrown)}) 
+    return this;
+},    
+http.complete=function(){
+   this.xr.always(function(jqXHR, textStatus, errorThrown ) {fn(jqXHR, textStatus, errorThrown)}); 
+    return this;
+},
+
 model.empty = function () {
     return 1
 },
@@ -115,46 +296,26 @@ model.empty = function () {
             })
         },
         view.execute = function (t) {
-            return t.apply(view, [request, session, application])
-        }, view.$ = jMsvc.$, view.http = jMsvc.http, controller.execute = function (t) {
-    return t.apply(controller, [model])
-}, controller.event = {}, controller.http = jMsvc.http, controller.gets = jMsvc.prototype, controller.$ = jMsvc.$, request.set = function (t, i) {
+            return t.apply(controller, [request, session, application])
+        }, view.$ = jMsvc.$, 
+       controller.execute = function (t) {
+    return t.apply(controller, [view,model])
+}, 
+   controller.event = {}, controller.gets = jMsvc.prototype, controller.$ = jMsvc.$, request.set = function (t, i) {
     jMsvc.attrReq[t] = i;
     return this;
 },
-        controller.get = function (url, fn, dataType, datas, fne) {
-           this.http({
-                async: false,
-                type: "get",
-                url: url,
-                data: datas || {},
-                success: function (data) {
-                    if (fn) {
-                    fn(data)
-                    }
-                   
-                },
-                error: function (xhr, textStatus, thrownError) {
-                    if (fne) {
-                        fne(xhr, textStatus, thrownError)
-                    }
-                   
-                },
-                dataType: dataType || "json",
-                complete: function (data) {
-                   
-                }
-            })
-            return true;
+        controller.get = function (url) {
+          return new jMsvc.httpRequest(url) 
         },
-        controller.getJson = function (url, fn, fne) {
-            return this.get(url, fn, "json", {}, fne);
+        controller.getJson = function (url) {
+            return new jMsvc.httpRequest(url)
         },
-        controller.getHtml = function (url, fn, fne) {
-            return this.get(url, fn, "html", {}, fne);
+        controller.getHtml = function (url) {
+           return new jMsvc.httpRequest(url).setDataType("html");
         },
-        controller.getText = function (url, fn, fne) {
-            return this.get(url, fn, "text", {}, fne);
+        controller.getText = function (url) {
+            return new jMsvc.httpRequest(url).setDataType("text");
         },
         request.get = function (t) {
             return jMsvc.attrReq[t] || jMsvc.queryParameter(t)
@@ -359,21 +520,6 @@ model.empty = function () {
             return this
         }
 ,
-        jMsvc.sendService = function (t, i, s) {
-            $.ajax({
-                type: "POST",
-                url: i,
-                crossDomain: !0,
-                data: s,
-                success: function (i) {
-                    controller.event[t].success(i)
-                },
-                error: function (i, s, e) {
-                    controller.event[t].error(i, s, e)
-                },
-                dataType: "json"
-            })
-        },
         jMsvc.include = function () {
             var t = this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function () {
                 return !1
@@ -483,7 +629,7 @@ model.empty = function () {
             }
             return 0;
         }, 
-           jMsvc.isFadeIn = function (el) {
+        jMsvc.isFadeIn = function (el) {
             for (a in el.attributes) {
                 if (el.attributes[a] && /(jms-fade|jms-fade\-.*)+$/.test(el.attributes[a].name)) {
                   jMsvc.$(el).animate({opacity: 1 }, 400 );
@@ -626,7 +772,7 @@ model.empty = function () {
 
             return true;
         },
-		jMsvc.removeProperty=function(ob,reg){
+        jMsvc.removeProperty=function(ob,reg){
 		if(ob && ob.attributes){
 		var u=[];
 		for (j=0;j< ob.attributes.length;j++) {
