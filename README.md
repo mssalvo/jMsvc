@@ -94,7 +94,7 @@ __Documentation__
 
 -------------------------------------------------
 
-
+<a name="controlHtml />
 ### Control html
 
 * [jms-foreach](#jms-foreach)
@@ -104,6 +104,7 @@ __Documentation__
 * [jms-include](#jms-include)
 * [jms-include-replace](#jms-include-replace)
 * [jms-event](#jms-event)
+
 
 
 
@@ -435,6 +436,7 @@ __Example__
 
 <a name="jms-foreach" />
 ### jms-foreach
+[<<< Control Html](#controlHtml)
 
 Defining a pattern for each of the data of a collection
 
@@ -462,6 +464,7 @@ __Example__
 
 <a name="for-property" />
 ### for-property
+[<<< Control Html](#controlHtml)
 
 
 It defines the attributes of html that will be modified with the new value injected into a cycle jms-foreach
@@ -489,19 +492,21 @@ __Example__
 
 <a name="jms-property" />
 ### jms-property
+[<<< Control Html](#controlHtml)
+
 
 It defines the attributes of html that will be modified with the new value injected
 
-* [jms-property](#)
-* [jms-property-*](#)
-* [jms-property-html](#)
-* [jms-property-text](#)
-* [jms-property-value](#)
-* [jms-property-style](#)
-* [jms-property-append](#)
-* [jms-property-onclick](#)
-* [jms-property-myProperty](#)
-* [jms-property-etc..etc](#)
+[jms-property](#jms-property)
+[jms-property-*](#jms-property)
+[jms-property-html](#jms-property)
+[jms-property-text](#jms-property)
+[jms-property-value](#jms-property)
+[jms-property-style](#jms-property)
+[jms-property-append](#jms-property)
+[jms-property-onclick](#jms-property)
+[jms-property-myProperty](#jms-property)
+[jms-property-etc..etc](#jms-property)
 
 
 __Example__
@@ -519,6 +524,8 @@ __Example__
 
 <a name="jms-view" />
 ### jms-view
+[<<< Control Html](#controlHtml)
+
 
 It defines the element which houses the html view of a template or model
 
@@ -540,6 +547,8 @@ __Example__
 
 <a name="jms-include" />
 ### jms-include
+[<<< Control Html](#controlHtml)
+
 
 It defines the object that includes the HTML application html page or model
 
@@ -558,6 +567,8 @@ __Example__
 
 <a name="jms-include-replace" />
 ### jms-include-replace
+[<<< Control Html](#controlHtml)
+
 
 It defines the object that includes the HTML performs an html page or replace an application model
 shows the html page included
@@ -575,6 +586,8 @@ __Example__
 
 <a name="jms-event" />
 ### jms-event
+[<<< Control Html](#controlHtml)
+
 
 It defines the type of event associated with the item and the type of control to associate with the event - types allowed> 
 
