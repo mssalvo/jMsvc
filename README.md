@@ -435,7 +435,6 @@ __Example__
 
 <a name="jms-foreach" />
 ### jms-foreach
-Definisce un modello per ciascuno dei dati di una collezione
 
 Defining a pattern for each of the data of a collection
 
@@ -463,9 +462,7 @@ __Example__
 
 <a name="for-property" />
 ### for-property
-Definisce gli attributi dell'elemento html che saranno modificati con il nuovo valore iniettato all'interno di un ciclo 
 
-jms-foreach
 
 It defines the attributes of html that will be modified with the new value injected into a cycle jms-foreach
 
@@ -492,7 +489,6 @@ __Example__
 
 <a name="jms-property" />
 ### jms-property
-Definisce gli attributi dell'elemento html che saranno modificati con il nuovo valore iniettato
 
 It defines the attributes of html that will be modified with the new value injected
 
@@ -523,7 +519,6 @@ __Example__
 
 <a name="jms-view" />
 ### jms-view
-Definisce l'elemento che ospita l'html di una view template o model
 
 It defines the element which houses the html view of a template or model
 
@@ -545,7 +540,6 @@ __Example__
 
 <a name="jms-include" />
 ### jms-include
-Definisce l'oggetto che Include l'HTML di un'applicazione pagina html o model
 
 It defines the object that includes the HTML application html page or model
 
@@ -564,7 +558,6 @@ __Example__
 
 <a name="jms-include-replace" />
 ### jms-include-replace
-Definisce l'oggetto che Include l'HTML esegue un replace di un'applicazione pagina html o model
 
 It defines the object that includes the HTML performs an html page or replace an application model
 shows the html page included
@@ -582,10 +575,6 @@ __Example__
 
 <a name="jms-event" />
 ### jms-event
-
-Definisce il tipo di evento associato all'elemento e il tipo di controllo da associare all'evento - tipi ammessi > M-V-C-
-
-MVC
 
 It defines the type of event associated with the item and the type of control to associate with the event - types allowed> 
 
