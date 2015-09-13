@@ -92,7 +92,7 @@ var jMsvc = {
     httpRequest: function(o) {
         this.async = false;
         this.type = "GET";
-        this.dataType = "jsonp";
+        this.dataType = "json";
         this.url = o || null;
         this.data = null;
         this.statusCode = null;
@@ -122,6 +122,7 @@ act = function() {
         http = jMsvc.httpRequest.prototype;
 
 /*
+ * http.get (default: dataType = 'json')
  * Type: String
  * @returns {httpRequest}
  */
@@ -275,7 +276,7 @@ http.setScriptCharset = function(a) {
 },
 http.setting = function() {
     var options = {};
-    this.url = [this.url, (this.dataType == "jsonp" || this.dataType == "json") ? this.url.indexOf("callback=") ? "" : this.url.indexOf("?") ? "&callback=?" : "?callback=?" : ""].join("");
+    this.url = [this.url, (this.dataType == "jsonp") ? this.url.indexOf("callback=") ? "" : this.url.indexOf("?") ? "&callback=?" : "?callback=?" : ""].join("");
     for (i in this) {
         if (this[i] != null && !(typeof this[i] == typeof Function)) {
             options[i] = this[i];
@@ -340,26 +341,18 @@ http.complete = function() {
  * @param {String} url 
  * @returns {httpRequest}
  */
-        controller.getJson = function(url) {
-    return new jMsvc.httpRequest(url)
+        controller.getJSONP = function(url) {
+    return new jMsvc.httpRequest(url).setDataType("jsonp");
 },
   /* 
  * getHtml (default: dataType = 'html')
  * @param {String} url 
  * @returns {httpRequest}
  */       
-        controller.getHtml = function(url) {
+        controller.getHTML = function(url) {
     return new jMsvc.httpRequest(url).setDataType("html");
 },
  
- /* 
- * getText (default: dataType = 'text')
- * @param {String} url 
- * @returns {httpRequest}
- */
-        controller.getText = function(url) {
-    return new jMsvc.httpRequest(url).setDataType("text");
-},
  /* 
  * request.get
  * @param {String} t 
@@ -621,6 +614,7 @@ http.complete = function() {
     var t = this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
         return !1
     })()
+    
     return this.isView(t).openView(t);
 },
         jMsvc.call = function(n) {
@@ -629,6 +623,7 @@ http.complete = function() {
     })() : (function() {
         return !1
     })()
+
     return this.isView(t).openView(t);
 },
         jMsvc.openView = function(o) {

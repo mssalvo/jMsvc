@@ -38,7 +38,7 @@
                       controller.amovie=function(){
                           return this.execute(function($http){
                            
-                            this.get("/Example-jMsvc/demo/auto.json")
+                            this.get("../demo/auto.json")
                            .success(function(data) { context.auto=data.Makes;});
                    
                    
@@ -51,7 +51,8 @@
                        
                        view.amovie=function(){
                           return this.execute(function(){
-                          return { body:'./html/body.html' }; //include html/body.html in jms-view='body'
+                         
+						 return { body:'./html/body.html' };   //include html/body.html in jms-view='body'
                           })
                        }
                        
