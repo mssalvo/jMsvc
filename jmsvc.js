@@ -123,138 +123,157 @@ act = function() {
 
 /*
  * Type: String
+ * @returns {httpRequest}
  */
 http.get = function(url) {
+    return new jMsvc.httpRequest(url);
+},
+/*
+ * Type: String
+ * @returns {httpRequest}
+ */        
+ http.setUrl = function(url) {
     this.url = url;
     return this;
-},
-        /*
-         * Type: Boolean
-         */
-        http.setAsync = function(a) {
+},       
+/*
+ * Type: Boolean
+ */
+http.setAsync = function(a) {
     this.async = a;
     return this;
 },
-        /* type (default: 'GET')
-         * Type: String   
-         */
-        http.setType = function(a) {
+/* type (default: 'GET')
+ * Type: String   
+ * @returns {httpRequest}
+ */
+http.setType = function(a) {
     this.type = a;
     return this;
 },
-        /*
-         * dataType (default: Intelligent Guess (xml, json, jsonp, script, or html))
-         * Type: String
-         */
-        http.setDataType = function(a) {
+/*
+ * dataType (default: Intelligent Guess (xml, json, jsonp, script, or html))
+ * Type: String
+ * @returns {httpRequest}
+ */
+http.setDataType = function(a) {
     this.dataType = a;
     return this;
 },
-        /* 
-         * Type: PlainObject or String or Array
-         * @param {type} a
-         * @returns {httpRequest}
-         */
-        http.setData = function(a) {
+/* 
+ * Type: PlainObject or String or Array
+ * @param {type} a
+ * @returns {httpRequest}
+ */
+ http.setData = function(a) {
     this.data = a;
     return this;
 },
-        /* 
-         * Type: Number
-         */
-        http.setTimeout = function(a) {
+/* 
+ * Type: Number
+ * @returns {httpRequest}
+ */
+http.setTimeout = function(a) {
     this.timeout = a;
     return this;
 },
-        /* 
-         * Type: PlainObject
-         *   statusCode: {
-         *  404: function() {
-         *    alert( "page not found" );
-         *  }
-         * }
-         */
-        http.setStatusCode = function(a) {
+/* 
+ * Type: PlainObject
+ *   statusCode: {
+ *  404: function() {
+ *    alert( "page not found" );
+ *  }
+ * }
+ * @returns {httpRequest}
+ */
+http.setStatusCode = function(a) {
     this.statusCode = a;
     return this;
 },
-        /* 
-         * Type: PlainObject
-         *  xhrFields: {
-         *     withCredentials: true
-         *  }
-         */
-        http.setXhrFields = function(a) {
+/* 
+ * Type: PlainObject
+ *  xhrFields: {
+ *     withCredentials: true
+ *  }
+ * @returns {httpRequest}
+ */
+http.setXhrFields = function(a) {
     this.xhrFields = a;
     return this;
 },
-        /*
-         * Type: Function( jqXHR jqXHR, PlainObject settings )
-         * @param {type} a
-         * @returns {httpRequest}
-         */
+/*
+ * Type: Function( jqXHR jqXHR, PlainObject settings )
+ * @param {type} a
+ * @returns {httpRequest}
+ */
 
-        http.setBeforeSend = function(a) {
+http.setBeforeSend = function(a) {
     this.beforeSend = a;
     return this;
 },
-        /*
-         * cache (default: true, false for dataType 'script' and 'jsonp')
-         *  Type: Boolean
-         * @param {type} a
-         * @returns {httpRequest}
-         */
-        http.setCache = function(a) {
+/*
+ * cache (default: true, false for dataType 'script' and 'jsonp')
+ *  Type: Boolean
+ * @param {type} a
+ * @returns {httpRequest}
+ */
+http.setCache = function(a) {
     this.cache = a;
     return this;
 },
-        /* contentType (default: 'application/x-www-form-urlencoded; charset=UTF-8')
-         * Type: Boolean or String 
-         */
-        http.setContentType = function(a) {
+/* contentType (default: 'application/x-www-form-urlencoded; charset=UTF-8')
+ * Type: Boolean or String 
+ * @returns {httpRequest}
+ */
+http.setContentType = function(a) {
     this.contentType = a;
     return this;
 },
-        /*
-         * Type: PlainObject
-         * context: document.body    
-         * .success(function() {
-         * $( this ).addClass( "done" ); }
-         */
-        http.setContext = function(a) {
+/*
+ * Type: PlainObject
+ * context: document.body    
+ * .success(function() {
+ * $( this ).addClass( "done" ); }
+ * @returns {httpRequest}
+ */
+http.setContext = function(a) {
     this.context = a;
     return this;
 },
-        /* 
-         * Type: Boolean 
-         */
-        http.setCrossDomain = function(a) {
+/* 
+ * Type: Boolean 
+ * @returns {httpRequest}
+ */
+http.setCrossDomain = function(a) {
     this.crossDomain = a;
     return this;
 },
-        /*  
-         * Type: Function( String data, String type ) => Anything 
-         */
-        http.setDataFilter = function(a) {
+/*  
+ * Type: Function( String data, String type ) => Anything 
+ * @returns {httpRequest}
+ */
+http.setDataFilter = function(a) {
     this.dataFilter = a;
     return this;
 },
-        /*        
-         * processData (default: true)
-         * Type: Boolean   
-         */
-        http.setProcessData = function(a) {
+/*        
+ * processData (default: true)
+ * Type: Boolean
+ * @returns {httpRequest}   
+ */
+http.setProcessData = function(a) {
     this.processData = a;
     return this;
 },
-        /* 
-         * Type: String 
-         */
-        http.setScriptCharset = function(a) {
+/* 
+ * Type: String 
+ * @returns {httpRequest}
+ */
+http.setScriptCharset = function(a) {
     this.scriptCharset = a;
     return this;
 },
-        http.setting = function() {
+http.setting = function() {
     var options = {};
     this.url = [this.url, (this.dataType == "jsonp" || this.dataType == "json") ? this.url.indexOf("callback=") ? "" : this.url.indexOf("?") ? "&callback=?" : "?callback=?" : ""].join("");
     for (i in this) {
@@ -265,20 +284,20 @@ http.get = function(url) {
     this.xr = jMsvc.$.ajax(options)
     return this;
 },
-        http.success = function(fn) {
+http.success = function(fn) {
     this.setting();
     this.xr.done(function(data) {
         fn(data)
     })
     return this;
 },
-        http.error = function() {
+http.error = function() {
     this.xr.fail(function(jqXHR, textStatus, errorThrown) {
         fn(jqXHR, textStatus, errorThrown)
     })
     return this;
 },
-        http.complete = function() {
+http.complete = function() {
     this.xr.always(function(jqXHR, textStatus, errorThrown) {
         fn(jqXHR, textStatus, errorThrown)
     });
@@ -307,18 +326,45 @@ http.get = function(url) {
     jMsvc.attrReq[t] = i;
     return this;
 },
+        
+ /* 
+ * get (default: dataType = 'jsonp')
+ * @param {String} url 
+ * @returns {httpRequest}
+ */        
         controller.get = function(url) {
     return new jMsvc.httpRequest(url)
 },
+ /* 
+ * getJson (default: dataType = 'jsonp')
+ * @param {String} url 
+ * @returns {httpRequest}
+ */
         controller.getJson = function(url) {
     return new jMsvc.httpRequest(url)
 },
+  /* 
+ * getHtml (default: dataType = 'html')
+ * @param {String} url 
+ * @returns {httpRequest}
+ */       
         controller.getHtml = function(url) {
     return new jMsvc.httpRequest(url).setDataType("html");
 },
+ 
+ /* 
+ * getText (default: dataType = 'text')
+ * @param {String} url 
+ * @returns {httpRequest}
+ */
         controller.getText = function(url) {
     return new jMsvc.httpRequest(url).setDataType("text");
 },
+ /* 
+ * request.get
+ * @param {String} t 
+ * @returns {String}
+ */        
         request.get = function(t) {
     return jMsvc.attrReq[t] || jMsvc.queryParameter(t)
 }, session.setAttribute = function(t, i) {
@@ -378,7 +424,12 @@ http.get = function(url) {
         if (pos = s[e].indexOf("="), pos > 0 && t == s[e].substring(0, pos))
             return s[e].substring(pos + 1);
     return ""
-}, jMsvc.queryAction = function() {
+}, 
+ /* 
+ * queryAction ()
+ * @returns {String}
+ */  
+    jMsvc.queryAction = function() {
 
     var t = this.ishash ? unescape(window.location.hash.substring(1)) : unescape(window.location.search.substring(1)),
             i = 0;
@@ -422,6 +473,13 @@ http.get = function(url) {
         }
     }
 },
+ 
+ /* 
+ * searchHtmlController
+ * @param {Object Html} o 
+ * @returns {Array}
+ */ 
+        
         jMsvc.searchHtmlController = function(o) {
     var jmsController = [];
     Array.prototype.slice.call(o.querySelectorAll("[jms-controller]")).forEach(function(el, i) {
@@ -429,6 +487,12 @@ http.get = function(url) {
     })
     return jmsController;
 },
+ 
+  /* 
+ * initHtmlController
+ * @param {Object Html} o 
+ *  execute action
+ */       
         jMsvc.initHtmlController = function(o) {
     var jmsController = this.searchHtmlController(o);
     for (k in jmsController) {
@@ -440,6 +504,13 @@ http.get = function(url) {
     }
 
 },
+  
+ /* 
+ * searchHtmlEvent
+ * @param {Object Html} o 
+ * @returns {Array}
+ */ 
+                
         jMsvc.searchHtmlEvent = function(o) {
     var jmsEvent = [];
     Array.prototype.slice.call(o.querySelectorAll("[jms-event]")).forEach(function(el, i) {
@@ -447,6 +518,13 @@ http.get = function(url) {
     })
     return jmsEvent;
 },
+  
+ /* 
+ * initHtmlEvent
+ * @param {Object Html} o 
+ * initializes event
+ */ 
+                        
         jMsvc.initHtmlEvent = function(o) {
     var jmsEvent = this.searchHtmlEvent(o);
     // jms-event="click blur:M@home";
@@ -587,6 +665,14 @@ http.get = function(url) {
     })();
     return this;
 },
+          
+ /* 
+ * searchView
+ * @param {Object Html} ob 
+ * @param {Object Html} vw 
+ * @return {jMsvc}
+ */ 
+ 
         jMsvc.searchView = function(ob, vw) {
     if (ob) {
         Array.prototype.slice.call(ob.querySelectorAll("[jms-view]")).forEach(function(el, i) {
@@ -820,42 +906,42 @@ http.get = function(url) {
         return {key: p[0], val: p[0]}
     }
 },
-        jMsvc.settingTag = function(matchAttrSwitch, elemExp, elementForEach) {
-    switch (matchAttrSwitch) {
+        jMsvc.settingTag = function(m, e, o) {
+    switch (m) {
         case 'html':
-            this.$(elemExp).html(elementForEach)
+            this.$(e).html(o)
             break;
         case 'after':
-            this.$(elemExp).after(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(elementForEach ? elementForEach : document.createTextNode(elementForEach)))
+            this.$(e).after(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(o ? o : document.createTextNode(o)))
             break;
         case 'before':
-            this.$(elemExp).before(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(elementForEach) ? elementForEach : document.createTextNode(elementForEach))
+            this.$(e).before(/^<(\w+)\s*\/?>(?:.* <\/\1>|)/.test(o) ? o : document.createTextNode(o))
             break;
         case 'append':
-            this.$(elemExp).append(elementForEach)
+            this.$(e).append(o)
             break;
         case 'text':
-            this.$(elemExp).text(elementForEach)
+            this.$(e).text(o)
             break;
         default :
-            this.$(elemExp).attr(matchAttrSwitch, elementForEach)
+            this.$(e).attr(m, o)
     }
 
 },
-   jMsvc.settingTagOption = function(matchAttrSwitch, elemExp, elementForEach) {
+   jMsvc.settingTagOption = function(m, e, o) {
 
-    switch (matchAttrSwitch) {
+    switch (m) {
         case 'html':
-            this.$(elemExp).html(elementForEach)
+            this.$(e).html(o)
             break;
         case 'append':
-            this.$(elemExp).html(elementForEach)
+            this.$(e).html(o)
             break;
         case 'text':
-            this.$(elemExp).text(elementForEach)
+            this.$(e).text(o)
             break;
         default :
-            this.$(elemExp).attr(matchAttrSwitch, elementForEach)
+            this.$(e).attr(m, o)
     }
 
 
