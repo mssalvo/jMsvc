@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>example foreach</title>
+ 
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		 
+	</head>
+	<body>
+ 
+
+	<!-- script references -->
+	 
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="../core/jmsvc.js"></script>
+		<script src="app/view.js"></script>
+		<script src="app/controller.js"></script>
+		 
+                
+                  <!-- I create the menu -->
+		<ul>
+                <li jms-foreach="menu">
+		<a for-property-href="menu.url" for-property-html="menu.desc"></a>
+		</li> 
+		</ul>
+		 
+                  
+                    <!-- view body -->
+		   <div jms-view="body"></div>
+                
+	  
+		
+	</body>
+</html>

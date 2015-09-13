@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>example event</title>
+ 
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		 
+	</head>
+	<body>
+ 
+                
+        	<!-- script references -->
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+           
+		<script src="../core/jmsvc.js"></script>
+		 
+                <script>
+                        jMsvc.configHash(0)
+                      
+                        //Example 1 > init action CONTROLLER //
+                       controller.doSomething=function(){
+                           alert('myTestEvent OK');
+                       }
+ 
+                         //Example 2 > init action MODEL //
+                       model.doSomething=function(e){
+                            alert(this.value);
+                       }
+                          
+                       //Example 3 > init action VIEW //
+                      view.doSomething=function(e){
+                            alert(  e.target?e.target.value:e.srcElement.value);
+                       }
+                       
+                        //Example 4 > init action MVC //
+                      controller.amovie=function(){
+                          return this.execute(function($http){
+                           
+                            this.get("/Example-jMsvc/demo/auto.json")
+                           .success(function(data) { context.auto=data.Makes;});
+                   
+                   
+                            ///Example-jMsvc/demo/auto.json
+                            return 'amovie'; //init view amovie
+                
+                            
+                          })
+                       }
+                       
+                       view.amovie=function(){
+                          return this.execute(function(){
+                          return { body:'./html/body.html' }; //include html/body.html in jms-view='body'
+                          })
+                       }
+                       
+                context.menu=[
+                {url:'../exampleEvent/index.html',desc:'Example Event'},
+                {url:'../exampleForeach/index.html',desc:'Example Foreach'},
+                {url:'../exampleProperty/index.html',desc:'Example Property'},
+                {url:'../exampleInclude/index.html',desc:'Example Include'}
+                ];
+                       
+		</script>
+                
+                
+                 <!-- I create the menu -->
+                <ul>
+                <li jms-foreach="menu">
+		<a for-property-href="menu.url" for-property-html="menu.desc"></a>
+		</li> 
+		</ul>		
+                   
+                    <!-- add event doSomething  for the object controller -->
+		<input type="button" value="servizi" jms-event="click:C@doSomething">
+                <!-- add event doSomething  for the object model -->
+		<input type="button" value="gallery" jms-event="click:M@doSomething">
+                <!-- add event doSomething  for the object view -->
+		<input type="button" value="home" jms-event="click:V@doSomething">
+                
+                
+                    <!-- init action amovie -->
+		<input type="button" value="Auto Movie" jms-event="click:MVC@amovie">
+                 
+                
+                
+                  <!-- viwe body -->
+                 <div jms-view="body"></div>
+                 
+                 
+                 <!-- replace html this page -->
+                <div jms-include-replace="./index.html"></div>
+                 
+		
+	</body>
+</html>

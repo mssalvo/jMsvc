@@ -1,0 +1,13 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+
+    <table>
+        <!-- forEach -->   
+    <tr jms-foreach="auto">
+                         <!-- add event doSomething  for the object model -->    
+    <td for-property-html="auto.make_display" jms-event="click:M@doSomething"></td>
+    <td for-property-html="auto.make_country"></td>
+    </tr>
+    </table>

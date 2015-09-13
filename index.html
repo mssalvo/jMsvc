@@ -1,0 +1,50 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+       		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		    <script src="demo/core/jmsvc.js"></script>
+		 
+		
+                <script>
+                        jMsvc.configHash(0)
+                     
+                        context.testValue={url:'//google.it',val:'test property'};
+                        
+                       
+                        context.myUrl='//google.it';
+                        context.myDescr='test property myDescr';
+                        
+                        
+                 context.menu=[
+                {url:'./demo/exampleEvent/index.html',desc:'Example Event'},
+                {url:'./demo/exampleForeach/index.html',desc:'Example Foreach'},
+                {url:'./demo/exampleProperty/index.html',desc:'Example Property'},
+                {url:'./demo/exampleInclude/index.html',desc:'Example Include'}
+                ];
+                        
+		</script>
+                <ul>
+                <li jms-foreach="menu">
+		<a for-property-href="menu.url" for-property-html="menu.desc"></a>
+		</li> 
+		</ul>
+	 
+		 
+		<br><br>
+		<a jms-property-href="testValue.url" jms-property-append="testValue.val,testValue.url"></a>
+		<br><br>
+		<a jms-property-href="myUrl" jms-property-append="myDescr"></a>
+		
+	 
+		
+	 
+    </body>
+</html>

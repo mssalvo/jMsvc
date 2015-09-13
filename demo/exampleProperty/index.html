@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>example property</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		 
+	</head>
+	<body>
+<!-- Wrap all page content here -->
+		
+
+
+	<!-- script references -->
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		 
+		<script src="../core/jmsvc.js"></script>
+		 
+		
+                <script>
+                       
+                         jMsvc.configHash(0)
+                     
+                        context.testValue={url:'//google.it',val:'test property'};
+                        
+                       
+                        context.myUrl='//google.it';
+                        context.myDescr='test property myDescr';
+                        
+                        
+                 context.menu=[
+                {url:'../exampleEvent/index.html',desc:'Example Event'},
+                {url:'../exampleForeach/index.html',desc:'Example Foreach'},
+                {url:'../exampleProperty/index.html',desc:'Example Property'},
+                {url:'../exampleInclude/index.html',desc:'Example Include'}
+                ];
+                        
+		</script>
+                <ul>
+                <li jms-foreach="menu">
+		<a for-property-href="menu.url" for-property-html="menu.desc"></a>
+		</li> 
+		</ul>
+	 
+		 
+		<br><br>
+		<a jms-property-href="testValue.url" jms-property-append="testValue.val,testValue.url"></a>
+		<br><br>
+		<a jms-property-href="myUrl" jms-property-append="myDescr"></a>
+		
+	  
+		
+	</body>
+</html>
