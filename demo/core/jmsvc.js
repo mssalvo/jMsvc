@@ -739,7 +739,7 @@ http.complete = function() {
 },
         jMsvc.isforEach = function(o) {
     var forEachs = [];
-    this.initHtmlEvent(o);
+    this.initHtmlEvent(o); 
     this.initHtmlController(o);
 
     Array.prototype.slice.call(o.querySelectorAll('[jms-foreach]')).forEach(function(el, i) {
