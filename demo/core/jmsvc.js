@@ -107,6 +107,13 @@ var jMsvc = {
         this.processData = null;
         this.scriptCharset = null;
         this.xr = null;
+    },
+    setLocation:function(l,e){
+        try {  
+       history.pushState?history.pushState(null, null, this.ishash?('#'+this.getRoot(l)):('?'+this.getRoot(l))):location.hash = '#' + this.getRoot(l);
+        return false;
+    } catch(e) {}
+        location.hash = '#' + this.getRoot(l);
     }
 },
 act = function() {
@@ -318,10 +325,10 @@ http.get = function(url) {
     })
 },
         view.execute = function(t) {
-    return t.apply(controller, [request, session, application])
+    return t.apply(controller, [context, request, session, application])
 }, view.$ = jMsvc.$,
         controller.execute = function(t) {
-    return t.apply(controller, [view, model])
+    return t.apply(controller, [context,request, session, application,view, model])
 },
         controller.event = {}, controller.gets = jMsvc.prototype, controller.$ = jMsvc.$, request.set = function(t, i) {
     jMsvc.attrReq[t] = i;
@@ -415,6 +422,16 @@ http.get = function(url) {
         if (pos = s[e].indexOf("="), pos > 0 && t == s[e].substring(0, pos))
             return s[e].substring(pos + 1);
     return ""
+}, 
+    jMsvc.autoRequest = function() {
+    var jmsReq= jMsvc.getJmsRequest();
+    if(jmsReq!='undefined')
+        for(var a in jmsReq){
+    for (var i = unescape(jmsReq[a]), s = i.split("&"), e = 0; e < s.length; e++)
+        if (pos = s[e].indexOf("="), pos > 0)
+            jMsvc.attrReq[s[e].substring(0, pos)] = s[e].substring(pos + 1)
+        }
+    return this
 },
         /* 
          * queryAction ()
@@ -477,6 +494,19 @@ http.get = function(url) {
     })
     return jmsController;
 },
+   jMsvc.getJmsRequest = function() {
+        var jmsRequest = [];
+        Array.prototype.slice.call(document.querySelectorAll("[jms-request]")).forEach(function(el, i) {
+            jmsRequest[i] = el.getAttribute("jms-request");
+        })
+        return jmsRequest;
+    },
+    jMsvc.searchJmsHidden = function(o) {
+        Array.prototype.slice.call(o.querySelectorAll("[jms-hidden]")).forEach(function(el, i) {
+            el.style.display="none"; 
+        })
+        return this;
+    } ,
         /* 
          * initHtmlController
          * @param {Object Html} o 
@@ -552,7 +582,7 @@ http.get = function(url) {
                     case 'mvc':
                         jMsvc.bind(obj, nEvt[s], function() {
                             return jMsvc.call((function(d) {
-                                return d
+                                return jMsvc.setLocation(d),d
                             })(act))
                         }, controller);
                         break;
@@ -612,7 +642,8 @@ http.get = function(url) {
     return this.isView(t).openView(t);
 },
         jMsvc.call = function(n) {
-    var t = n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
+        jMsvc.autoRequest();
+      var t = n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
         return !1
     })() : (function() {
         return !1
@@ -626,12 +657,35 @@ http.get = function(url) {
         for (j in o) {
             (function(j, o, $this) {
                 if (jMsvc.isObject(o[j])) {
+                     for (k in o[j]) {
+                     switch(k){
+                         case 'url':
+                      $this.$($this.getTemplate(j)).load(o[j][k], function(d) {
+                        jMsvc.searchView(jMsvc.getTemplate(j), o);
+                        jMsvc.writeProperty(jMsvc.getTemplate(j));
+                        jMsvc.isforEach(jMsvc.getTemplate(j));
+                        jMsvc.writeInclude(jMsvc.getTemplate(j));
+                       jMsvc.isFunction(o[j]['fn'])?o[j]['fn'].apply(controller,[d]):false
+                    });    
+                    break;
+                    case 'template':
                     exl = jMsvc.$(o[j]['template']).get();
                     $this.$($this.getTemplate(j)).html(exl);
                     jMsvc.searchView(jMsvc.getTemplate(j), o);
                     jMsvc.isforEach(jMsvc.getTemplate(j));
                     jMsvc.writeProperty(jMsvc.getTemplate(j));
                     jMsvc.writeInclude(jMsvc.getTemplate(j));
+                    jMsvc.isFunction(o[j]['fn'])?o[j]['fn'].apply(controller,[exl]):false
+                          break;
+                         
+                     }    
+                     }
+//                    exl = jMsvc.$(o[j]['template']).get();
+//                    $this.$($this.getTemplate(j)).html(exl);
+//                    jMsvc.searchView(jMsvc.getTemplate(j), o);
+//                    jMsvc.isforEach(jMsvc.getTemplate(j));
+//                    jMsvc.writeProperty(jMsvc.getTemplate(j));
+//                    jMsvc.writeInclude(jMsvc.getTemplate(j));
                 } else {
                     $this.$($this.getTemplate(j)).load(o[j], function() {
                         jMsvc.searchView(jMsvc.getTemplate(j), o);
@@ -671,18 +725,36 @@ http.get = function(url) {
             for (j in vw) {
                 if (el.getAttribute("jms-view") == j) {
                     (function(j, vw, el) {
-                        if (jMsvc.isObject(vw[j])) {
-                            exl = jMsvc.$(vw[j]['template']).get();
+                        if (jMsvc.isObject(vw[j])) {  
+                        for (k in o[j]) {
+                         switch(k){
+                         case 'url':
+                        $this.$($this.getTemplate(j)).load(vw[j][k], function(d) {
+                        jMsvc.isforEach(el);
+                        jMsvc.writeProperty(el);
+                        jMsvc.writeInclude(el);
+                        jMsvc.isFunction(vw[j]['fn'])?vw[j]['fn'].apply(controller,[d]):false
+                    });    
+                    break;
+                    case 'template':
+                     exl = jMsvc.$(vw[j]['template']).get();
                             jMsvc.$(el).html(exl);
                             jMsvc.isforEach(el);
                             jMsvc.writeProperty(el);
                             jMsvc.writeInclude(el);
+                    jMsvc.isFunction(vw[j]['fn'])?vw[j]['fn'].apply(controller,[exl]):false
+                          break;
+                         
+                     }    
+                     }
+                  
                         } else {
+                        
                             jMsvc.$(el).load(vw[j], function() {
                                 jMsvc.isforEach(el);
                                 jMsvc.writeProperty(el);
                                 jMsvc.writeInclude(el);
-
+                               
                             });
                         }
                     })(j, vw, el)
@@ -743,9 +815,9 @@ http.get = function(url) {
 },
         jMsvc.isforEach = function(o) {
     var forEachs = [];
-    //this.initHtmlEvent(o);
+    this.initHtmlEvent(o);
     this.initHtmlController(o);
-
+    this.searchJmsHidden(o);
     Array.prototype.slice.call(o.querySelectorAll('[jms-foreach]')).forEach(function(el, i) {
         forEachs[el.getAttribute('jms-foreach')] = {attr: el.getAttribute('jms-foreach'), exp: [], obj: el};
         el.removeAttribute('jms-foreach');
@@ -758,6 +830,7 @@ http.get = function(url) {
             var clone = this.$(fork[x]['obj']).clone().get(0);
             var aryExp = Array.prototype.slice.call(clone.getElementsByTagName('*'));
             jMsvc.initHtmlEvent(clone);
+            jMsvc.searchJmsHidden(clone);
             if (!aryExp.length) {
                 fork[x]['exp'] = [clone];
             } else {
@@ -813,7 +886,7 @@ http.get = function(url) {
 
     return true;
 },
-        jMsvc.isAttached = function(o) {
+  jMsvc.isAttached = function(o) {
     var forEachs = [];
 
     Array.prototype.slice.call(o.getElementsByTagName('*')).forEach(function(el, i) {
