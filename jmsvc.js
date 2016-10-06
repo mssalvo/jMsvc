@@ -57,7 +57,7 @@ var jMsvc = {
                         _hashValue = window.location.hash;
                         jMsvc.call(jMsvc.queryAction())
                     }
-                }, 500);
+                }, 200);
             }
         }
         return this.ishash = t, this
@@ -107,6 +107,13 @@ var jMsvc = {
         this.processData = null;
         this.scriptCharset = null;
         this.xr = null;
+    },
+    setLocation:function(l,e){
+        try {  
+       history.pushState?history.pushState(null, null, this.ishash?('#'+this.getRoot(l)):('?'+this.getRoot(l))):location.hash = '#' + this.getRoot(l);
+        return false;
+    } catch(e) {}
+        location.hash = '#' + this.getRoot(l);
     }
 },
 act = function() {
@@ -129,152 +136,152 @@ act = function() {
 http.get = function(url) {
     return new jMsvc.httpRequest(url);
 },
-/*
- * Type: String
- * @returns {httpRequest}
- */        
- http.setUrl = function(url) {
+        /*
+         * Type: String
+         * @returns {httpRequest}
+         */
+        http.setUrl = function(url) {
     this.url = url;
     return this;
-},       
-/*
- * Type: Boolean
- */
-http.setAsync = function(a) {
+},
+        /*
+         * Type: Boolean
+         */
+        http.setAsync = function(a) {
     this.async = a;
     return this;
 },
-/* type (default: 'GET')
- * Type: String   
- * @returns {httpRequest}
- */
-http.setType = function(a) {
+        /* type (default: 'GET')
+         * Type: String   
+         * @returns {httpRequest}
+         */
+        http.setType = function(a) {
     this.type = a;
     return this;
 },
-/*
- * dataType (default: Intelligent Guess (xml, json, jsonp, script, or html))
- * Type: String
- * @returns {httpRequest}
- */
-http.setDataType = function(a) {
+        /*
+         * dataType (default: Intelligent Guess (xml, json, jsonp, script, or html))
+         * Type: String
+         * @returns {httpRequest}
+         */
+        http.setDataType = function(a) {
     this.dataType = a;
     return this;
 },
-/* 
- * Type: PlainObject or String or Array
- * @param {type} a
- * @returns {httpRequest}
- */
- http.setData = function(a) {
+        /* 
+         * Type: PlainObject or String or Array
+         * @param {type} a
+         * @returns {httpRequest}
+         */
+        http.setData = function(a) {
     this.data = a;
     return this;
 },
-/* 
- * Type: Number
- * @returns {httpRequest}
- */
-http.setTimeout = function(a) {
+        /* 
+         * Type: Number
+         * @returns {httpRequest}
+         */
+        http.setTimeout = function(a) {
     this.timeout = a;
     return this;
 },
-/* 
- * Type: PlainObject
- *   statusCode: {
- *  404: function() {
- *    alert( "page not found" );
- *  }
- * }
- * @returns {httpRequest}
- */
-http.setStatusCode = function(a) {
+        /* 
+         * Type: PlainObject
+         *   statusCode: {
+         *  404: function() {
+         *    alert( "page not found" );
+         *  }
+         * }
+         * @returns {httpRequest}
+         */
+        http.setStatusCode = function(a) {
     this.statusCode = a;
     return this;
 },
-/* 
- * Type: PlainObject
- *  xhrFields: {
- *     withCredentials: true
- *  }
- * @returns {httpRequest}
- */
-http.setXhrFields = function(a) {
+        /* 
+         * Type: PlainObject
+         *  xhrFields: {
+         *     withCredentials: true
+         *  }
+         * @returns {httpRequest}
+         */
+        http.setXhrFields = function(a) {
     this.xhrFields = a;
     return this;
 },
-/*
- * Type: Function( jqXHR jqXHR, PlainObject settings )
- * @param {type} a
- * @returns {httpRequest}
- */
+        /*
+         * Type: Function( jqXHR jqXHR, PlainObject settings )
+         * @param {type} a
+         * @returns {httpRequest}
+         */
 
-http.setBeforeSend = function(a) {
+        http.setBeforeSend = function(a) {
     this.beforeSend = a;
     return this;
 },
-/*
- * cache (default: true, false for dataType 'script' and 'jsonp')
- *  Type: Boolean
- * @param {type} a
- * @returns {httpRequest}
- */
-http.setCache = function(a) {
+        /*
+         * cache (default: true, false for dataType 'script' and 'jsonp')
+         *  Type: Boolean
+         * @param {type} a
+         * @returns {httpRequest}
+         */
+        http.setCache = function(a) {
     this.cache = a;
     return this;
 },
-/* contentType (default: 'application/x-www-form-urlencoded; charset=UTF-8')
- * Type: Boolean or String 
- * @returns {httpRequest}
- */
-http.setContentType = function(a) {
+        /* contentType (default: 'application/x-www-form-urlencoded; charset=UTF-8')
+         * Type: Boolean or String 
+         * @returns {httpRequest}
+         */
+        http.setContentType = function(a) {
     this.contentType = a;
     return this;
 },
-/*
- * Type: PlainObject
- * context: document.body    
- * .success(function() {
- * $( this ).addClass( "done" ); }
- * @returns {httpRequest}
- */
-http.setContext = function(a) {
+        /*
+         * Type: PlainObject
+         * context: document.body    
+         * .success(function() {
+         * $( this ).addClass( "done" ); }
+         * @returns {httpRequest}
+         */
+        http.setContext = function(a) {
     this.context = a;
     return this;
 },
-/* 
- * Type: Boolean 
- * @returns {httpRequest}
- */
-http.setCrossDomain = function(a) {
+        /* 
+         * Type: Boolean 
+         * @returns {httpRequest}
+         */
+        http.setCrossDomain = function(a) {
     this.crossDomain = a;
     return this;
 },
-/*  
- * Type: Function( String data, String type ) => Anything 
- * @returns {httpRequest}
- */
-http.setDataFilter = function(a) {
+        /*  
+         * Type: Function( String data, String type ) => Anything 
+         * @returns {httpRequest}
+         */
+        http.setDataFilter = function(a) {
     this.dataFilter = a;
     return this;
 },
-/*        
- * processData (default: true)
- * Type: Boolean
- * @returns {httpRequest}   
- */
-http.setProcessData = function(a) {
+        /*        
+         * processData (default: true)
+         * Type: Boolean
+         * @returns {httpRequest}   
+         */
+        http.setProcessData = function(a) {
     this.processData = a;
     return this;
 },
-/* 
- * Type: String 
- * @returns {httpRequest}
- */
-http.setScriptCharset = function(a) {
+        /* 
+         * Type: String 
+         * @returns {httpRequest}
+         */
+        http.setScriptCharset = function(a) {
     this.scriptCharset = a;
     return this;
 },
-http.setting = function() {
+        http.setting = function() {
     var options = {};
     this.url = [this.url, (this.dataType == "jsonp") ? this.url.indexOf("callback=") ? "" : this.url.indexOf("?") ? "&callback=?" : "?callback=?" : ""].join("");
     for (i in this) {
@@ -285,20 +292,20 @@ http.setting = function() {
     this.xr = jMsvc.$.ajax(options)
     return this;
 },
-http.success = function(fn) {
+        http.success = function(fn) {
     this.setting();
     this.xr.done(function(data) {
         fn(data)
     })
     return this;
 },
-http.error = function() {
+        http.error = function() {
     this.xr.fail(function(jqXHR, textStatus, errorThrown) {
         fn(jqXHR, textStatus, errorThrown)
     })
     return this;
 },
-http.complete = function() {
+        http.complete = function() {
     this.xr.always(function(jqXHR, textStatus, errorThrown) {
         fn(jqXHR, textStatus, errorThrown)
     });
@@ -318,46 +325,44 @@ http.complete = function() {
     })
 },
         view.execute = function(t) {
-    return t.apply(controller, [request, session, application])
+    return t.apply(controller, [context, request, session, application])
 }, view.$ = jMsvc.$,
         controller.execute = function(t) {
-    return t.apply(controller, [view, model])
+    return t.apply(controller, [context,request, session, application,view, model])
 },
         controller.event = {}, controller.gets = jMsvc.prototype, controller.$ = jMsvc.$, request.set = function(t, i) {
     jMsvc.attrReq[t] = i;
     return this;
 },
-        
- /* 
- * get (default: dataType = 'jsonp')
- * @param {String} url 
- * @returns {httpRequest}
- */        
+        /* 
+         * get (default: dataType = 'jsonp')
+         * @param {String} url 
+         * @returns {httpRequest}
+         */
         controller.get = function(url) {
     return new jMsvc.httpRequest(url)
 },
- /* 
- * getJson (default: dataType = 'jsonp')
- * @param {String} url 
- * @returns {httpRequest}
- */
+        /* 
+         * getJson (default: dataType = 'jsonp')
+         * @param {String} url 
+         * @returns {httpRequest}
+         */
         controller.getJSONP = function(url) {
     return new jMsvc.httpRequest(url).setDataType("jsonp");
 },
-  /* 
- * getHtml (default: dataType = 'html')
- * @param {String} url 
- * @returns {httpRequest}
- */       
+        /* 
+         * getHtml (default: dataType = 'html')
+         * @param {String} url 
+         * @returns {httpRequest}
+         */
         controller.getHTML = function(url) {
     return new jMsvc.httpRequest(url).setDataType("html");
 },
- 
- /* 
- * request.get
- * @param {String} t 
- * @returns {String}
- */        
+        /* 
+         * request.get
+         * @param {String} t 
+         * @returns {String}
+         */
         request.get = function(t) {
     return jMsvc.attrReq[t] || jMsvc.queryParameter(t)
 }, session.setAttribute = function(t, i) {
@@ -418,11 +423,21 @@ http.complete = function() {
             return s[e].substring(pos + 1);
     return ""
 }, 
- /* 
- * queryAction ()
- * @returns {String}
- */  
-    jMsvc.queryAction = function() {
+    jMsvc.autoRequest = function() {
+    var jmsReq= jMsvc.getJmsRequest();
+    if(jmsReq!='undefined')
+        for(var a in jmsReq){
+    for (var i = unescape(jmsReq[a]), s = i.split("&"), e = 0; e < s.length; e++)
+        if (pos = s[e].indexOf("="), pos > 0)
+            jMsvc.attrReq[s[e].substring(0, pos)] = s[e].substring(pos + 1)
+        }
+    return this
+},
+        /* 
+         * queryAction ()
+         * @returns {String}
+         */
+        jMsvc.queryAction = function() {
 
     var t = this.ishash ? unescape(window.location.hash.substring(1)) : unescape(window.location.search.substring(1)),
             i = 0;
@@ -466,13 +481,12 @@ http.complete = function() {
         }
     }
 },
- 
- /* 
- * searchHtmlController
- * @param {Object Html} o 
- * @returns {Array}
- */ 
-        
+        /* 
+         * searchHtmlController
+         * @param {Object Html} o 
+         * @returns {Array}
+         */
+
         jMsvc.searchHtmlController = function(o) {
     var jmsController = [];
     Array.prototype.slice.call(o.querySelectorAll("[jms-controller]")).forEach(function(el, i) {
@@ -480,12 +494,24 @@ http.complete = function() {
     })
     return jmsController;
 },
- 
-  /* 
- * initHtmlController
- * @param {Object Html} o 
- *  execute action
- */       
+   jMsvc.getJmsRequest = function() {
+        var jmsRequest = [];
+        Array.prototype.slice.call(document.querySelectorAll("[jms-request]")).forEach(function(el, i) {
+            jmsRequest[i] = el.getAttribute("jms-request");
+        })
+        return jmsRequest;
+    },
+    jMsvc.searchJmsHidden = function(o) {
+        Array.prototype.slice.call(o.querySelectorAll("[jms-hidden]")).forEach(function(el, i) {
+            el.style.display="none"; 
+        })
+        return this;
+    } ,
+        /* 
+         * initHtmlController
+         * @param {Object Html} o 
+         *  execute action
+         */
         jMsvc.initHtmlController = function(o) {
     var jmsController = this.searchHtmlController(o);
     for (k in jmsController) {
@@ -497,13 +523,12 @@ http.complete = function() {
     }
 
 },
-  
- /* 
- * searchHtmlEvent
- * @param {Object Html} o 
- * @returns {Array}
- */ 
-                
+        /* 
+         * searchHtmlEvent
+         * @param {Object Html} o 
+         * @returns {Array}
+         */
+
         jMsvc.searchHtmlEvent = function(o) {
     var jmsEvent = [];
     Array.prototype.slice.call(o.querySelectorAll("[jms-event]")).forEach(function(el, i) {
@@ -511,13 +536,12 @@ http.complete = function() {
     })
     return jmsEvent;
 },
-  
- /* 
- * initHtmlEvent
- * @param {Object Html} o 
- * initializes event
- */ 
-                        
+        /* 
+         * initHtmlEvent
+         * @param {Object Html} o 
+         * initializes event
+         */
+
         jMsvc.initHtmlEvent = function(o) {
     var jmsEvent = this.searchHtmlEvent(o);
     // jms-event="click blur:M@home";
@@ -558,7 +582,7 @@ http.complete = function() {
                     case 'mvc':
                         jMsvc.bind(obj, nEvt[s], function() {
                             return jMsvc.call((function(d) {
-                                return d
+                                return jMsvc.setLocation(d),d
                             })(act))
                         }, controller);
                         break;
@@ -614,11 +638,12 @@ http.complete = function() {
     var t = this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
         return !1
     })()
-    
+
     return this.isView(t).openView(t);
 },
         jMsvc.call = function(n) {
-    var t = n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
+        jMsvc.autoRequest();
+      var t = n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
         return !1
     })() : (function() {
         return !1
@@ -631,19 +656,46 @@ http.complete = function() {
     if (this.isObject(o)) {
         for (j in o) {
             (function(j, o, $this) {
-                $this.$($this.getTemplate(j)).load(o[j], function() {
-
-
+                if (jMsvc.isObject(o[j])) {
+                     for (k in o[j]) {
+                     switch(k){
+                         case 'url':
+                      $this.$($this.getTemplate(j)).load(o[j][k], function(d) {
+                        jMsvc.searchView(jMsvc.getTemplate(j), o);
+                        jMsvc.writeProperty(jMsvc.getTemplate(j));
+                        jMsvc.isforEach(jMsvc.getTemplate(j));
+                        jMsvc.writeInclude(jMsvc.getTemplate(j));
+                       jMsvc.isFunction(o[j]['fn'])?o[j]['fn'].apply(controller,[d]):false
+                    });    
+                    break;
+                    case 'template':
+                    exl = jMsvc.$(o[j]['template']).get();
+                    $this.$($this.getTemplate(j)).html(exl);
                     jMsvc.searchView(jMsvc.getTemplate(j), o);
-                    jMsvc.writeProperty(jMsvc.getTemplate(j));
                     jMsvc.isforEach(jMsvc.getTemplate(j));
+                    jMsvc.writeProperty(jMsvc.getTemplate(j));
                     jMsvc.writeInclude(jMsvc.getTemplate(j));
-
-
-                });
+                    jMsvc.isFunction(o[j]['fn'])?o[j]['fn'].apply(controller,[exl]):false
+                          break;
+                         
+                     }    
+                     }
+//                    exl = jMsvc.$(o[j]['template']).get();
+//                    $this.$($this.getTemplate(j)).html(exl);
+//                    jMsvc.searchView(jMsvc.getTemplate(j), o);
+//                    jMsvc.isforEach(jMsvc.getTemplate(j));
+//                    jMsvc.writeProperty(jMsvc.getTemplate(j));
+//                    jMsvc.writeInclude(jMsvc.getTemplate(j));
+                } else {
+                    $this.$($this.getTemplate(j)).load(o[j], function() {
+                        jMsvc.searchView(jMsvc.getTemplate(j), o);
+                        jMsvc.writeProperty(jMsvc.getTemplate(j));
+                        jMsvc.isforEach(jMsvc.getTemplate(j));
+                        jMsvc.writeInclude(jMsvc.getTemplate(j));
+                    });
+                }
             })(j, o, this)
         }
-
     }
     return true;
 },
@@ -660,27 +712,51 @@ http.complete = function() {
     })();
     return this;
 },
-          
- /* 
- * searchView
- * @param {Object Html} ob 
- * @param {Object Html} vw 
- * @return {jMsvc}
- */ 
- 
+        /* 
+         * searchView
+         * @param {Object Html} ob 
+         * @param {Object Html} vw 
+         * @return {jMsvc}
+         */
+
         jMsvc.searchView = function(ob, vw) {
     if (ob) {
         Array.prototype.slice.call(ob.querySelectorAll("[jms-view]")).forEach(function(el, i) {
             for (j in vw) {
                 if (el.getAttribute("jms-view") == j) {
                     (function(j, vw, el) {
-                        jMsvc.$(el).load(vw[j], function() {
-
+                        if (jMsvc.isObject(vw[j])) {  
+                        for (k in o[j]) {
+                         switch(k){
+                         case 'url':
+                        $this.$($this.getTemplate(j)).load(vw[j][k], function(d) {
+                        jMsvc.isforEach(el);
+                        jMsvc.writeProperty(el);
+                        jMsvc.writeInclude(el);
+                        jMsvc.isFunction(vw[j]['fn'])?vw[j]['fn'].apply(controller,[d]):false
+                    });    
+                    break;
+                    case 'template':
+                     exl = jMsvc.$(vw[j]['template']).get();
+                            jMsvc.$(el).html(exl);
                             jMsvc.isforEach(el);
                             jMsvc.writeProperty(el);
                             jMsvc.writeInclude(el);
-
-                        });
+                    jMsvc.isFunction(vw[j]['fn'])?vw[j]['fn'].apply(controller,[exl]):false
+                          break;
+                         
+                     }    
+                     }
+                  
+                        } else {
+                        
+                            jMsvc.$(el).load(vw[j], function() {
+                                jMsvc.isforEach(el);
+                                jMsvc.writeProperty(el);
+                                jMsvc.writeInclude(el);
+                               
+                            });
+                        }
                     })(j, vw, el)
                 }
             }
@@ -739,9 +815,9 @@ http.complete = function() {
 },
         jMsvc.isforEach = function(o) {
     var forEachs = [];
-    //this.initHtmlEvent(o);
+    this.initHtmlEvent(o);
     this.initHtmlController(o);
-
+    this.searchJmsHidden(o);
     Array.prototype.slice.call(o.querySelectorAll('[jms-foreach]')).forEach(function(el, i) {
         forEachs[el.getAttribute('jms-foreach')] = {attr: el.getAttribute('jms-foreach'), exp: [], obj: el};
         el.removeAttribute('jms-foreach');
@@ -754,6 +830,7 @@ http.complete = function() {
             var clone = this.$(fork[x]['obj']).clone().get(0);
             var aryExp = Array.prototype.slice.call(clone.getElementsByTagName('*'));
             jMsvc.initHtmlEvent(clone);
+            jMsvc.searchJmsHidden(clone);
             if (!aryExp.length) {
                 fork[x]['exp'] = [clone];
             } else {
@@ -809,7 +886,7 @@ http.complete = function() {
 
     return true;
 },
-        jMsvc.isAttached = function(o) {
+  jMsvc.isAttached = function(o) {
     var forEachs = [];
 
     Array.prototype.slice.call(o.getElementsByTagName('*')).forEach(function(el, i) {
@@ -923,7 +1000,7 @@ http.complete = function() {
     }
 
 },
-   jMsvc.settingTagOption = function(m, e, o) {
+        jMsvc.settingTagOption = function(m, e, o) {
 
     switch (m) {
         case 'html':
@@ -966,7 +1043,7 @@ http.complete = function() {
                                             else {
                                                 elemExp['value'] = context[elementForEach][t][exps[e].split('.')[1]];
                                             }
-                                        }  else if (elemExp['nodeName'] == 'OPTION') {
+                                        } else if (elemExp['nodeName'] == 'OPTION') {
                                             if (matchAttr[1]) {
                                                 jMsvc.settingTagOption(matchAttr[1], elemExp, context[elementForEach][t][exps[e].split('.')[1]]);
 
@@ -999,7 +1076,7 @@ http.complete = function() {
                                                 else {
                                                     elemExp['value'] = context[exps[e].split('.')[0]];
                                                 }
-                                            }  else if (elemExp['nodeName'] == 'OPTION') {
+                                            } else if (elemExp['nodeName'] == 'OPTION') {
                                                 if (matchAttr[1]) {
 
                                                     jMsvc.settingTagOption(matchAttr[1], elemExp, context[exps[e].split('.')[0]]);
@@ -1031,7 +1108,7 @@ http.complete = function() {
                                                 else {
                                                     elemExp['value'] = context[exps[e].split('.')[0]][exps[e].split('.')[1]];
                                                 }
-                                            }  else if (elemExp['nodeName'] == 'OPTION') {
+                                            } else if (elemExp['nodeName'] == 'OPTION') {
                                                 if (matchAttr[1]) {
 
                                                     jMsvc.settingTagOption(matchAttr[1], elemExp, context[exps[e].split('.')[0]][exps[e].split('.')[1]]);
@@ -1092,7 +1169,7 @@ http.complete = function() {
                                         else {
                                             elemExp['value'] = context[exps[e].split('.')[0]];
                                         }
-                                    }  else if (elemExp['nodeName'] == 'OPTION') {
+                                    } else if (elemExp['nodeName'] == 'OPTION') {
                                         if (matchAttr[1]) {
                                             jMsvc.settingTagOption(matchAttr[1], elemExp, context[exps[e].split('.')[0]]);
 
@@ -1120,7 +1197,7 @@ http.complete = function() {
                                         else {
                                             elemExp['value'] = context[exps[e].split('.')[0]][exps[e].split('.')[1]];
                                         }
-                                    }  else if (elemExp['nodeName'].toUpperCase() == 'OPTION') {
+                                    } else if (elemExp['nodeName'].toUpperCase() == 'OPTION') {
                                         if (matchAttr[1]) {
 
                                             jMsvc.settingTagOption(matchAttr[1], elemExp, context[exps[e].split('.')[0]][exps[e].split('.')[1]]);
