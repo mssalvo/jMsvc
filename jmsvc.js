@@ -680,12 +680,7 @@ http.get = function(url) {
                          
                      }    
                      }
-//                    exl = jMsvc.$(o[j]['template']).get();
-//                    $this.$($this.getTemplate(j)).html(exl);
-//                    jMsvc.searchView(jMsvc.getTemplate(j), o);
-//                    jMsvc.isforEach(jMsvc.getTemplate(j));
-//                    jMsvc.writeProperty(jMsvc.getTemplate(j));
-//                    jMsvc.writeInclude(jMsvc.getTemplate(j));
+
                 } else {
                     $this.$($this.getTemplate(j)).load(o[j], function() {
                         jMsvc.searchView(jMsvc.getTemplate(j), o);
