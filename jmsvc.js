@@ -108,9 +108,14 @@ var jMsvc = {
         this.scriptCharset = null;
         this.xr = null;
     },
-    setLocation:function(l,e){
+    setLocation:function(l){
+    oPageInfo = {
+            title: null,
+            action:this.getRoot(l),        
+            url: this.ishash?('#'+this.getRoot(l)):('?'+this.getRoot(l))
+        };
         try {  
-       history.pushState?history.pushState(null, null, this.ishash?('#'+this.getRoot(l)):('?'+this.getRoot(l))):location.hash = '#' + this.getRoot(l);
+       history.pushState?history.pushState(oPageInfo, oPageInfo.title, oPageInfo.url):location.hash = '#' + this.getRoot(l);
         return false;
     } catch(e) {}
         location.hash = '#' + this.getRoot(l);
@@ -423,14 +428,15 @@ http.get = function(url) {
             return s[e].substring(pos + 1);
     return ""
 }, 
-    jMsvc.autoRequest = function() {
-    var jmsReq= jMsvc.getJmsRequest();
+    jMsvc.autoRequest = function(d) {
+    var jmsReq= this.getJmsRequest();
     if(jmsReq!='undefined')
         for(var a in jmsReq){
     for (var i = unescape(jmsReq[a]), s = i.split("&"), e = 0; e < s.length; e++)
         if (pos = s[e].indexOf("="), pos > 0)
-            jMsvc.attrReq[s[e].substring(0, pos)] = s[e].substring(pos + 1)
+            this.attrReq[s[e].substring(0, pos)] = s[e].substring(pos + 1)
         }
+     
     return this
 },
         /* 
@@ -582,7 +588,7 @@ http.get = function(url) {
                     case 'mvc':
                         jMsvc.bind(obj, nEvt[s], function() {
                             return jMsvc.call((function(d) {
-                                return jMsvc.setLocation(d),d
+                                return   jMsvc.setLocation(d), d
                             })(act))
                         }, controller);
                         break;
@@ -635,14 +641,14 @@ http.get = function(url) {
 }
 ,
         jMsvc.include = function() {
-    var t = this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
+        var t = this.isFunction(this.controller.prototype[jMsvc.queryAction()]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
         return !1
     })()
 
     return this.isView(t).openView(t);
 },
         jMsvc.call = function(n) {
-        jMsvc.autoRequest();
+        jMsvc.autoRequest(n);
       var t = n ? this.isFunction(this.controller.prototype[jMsvc.getRoot(n)]) ? this.view.prototype[vname = this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc]) || "empty"].apply(view, [html]) : (function() {
         return !1
     })() : (function() {
@@ -680,7 +686,7 @@ http.get = function(url) {
                          
                      }    
                      }
-
+ 
                 } else {
                     $this.$($this.getTemplate(j)).load(o[j], function() {
                         jMsvc.searchView(jMsvc.getTemplate(j), o);
@@ -1227,7 +1233,10 @@ http.get = function(url) {
 }, _hashValue = '';
 
 (function(__) {
-    __(document).ready(function() {
+__(document).ready(function() {
         jMsvc.include();
     })
+window.onpopstate = function(event) {
+   jMsvc.call(event.state.action);
+};
 })(jMsvc.$)
