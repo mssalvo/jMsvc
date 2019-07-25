@@ -11,7 +11,7 @@
  *	under the License.
  *	The Original Code is javascript.
  *	The Initial Developer of the Original Code is Salvatore Mariniello.
- *	Portions created by Salvatore Mariniello are Copyright (C) 2015.
+ *	Portions created by Salvatore Mariniello are Copyright (C) 2010.
  *	All Rights Reserved.
  *       https://github.com/mssalvo/jMsvc
  */
