@@ -11,7 +11,7 @@
  *	under the License.
  *	The Original Code is javascript.
  *	The Initial Developer of the Original Code is Salvatore Mariniello.
- *	Portions created by Salvatore Mariniello are Copyright (C) 2010.
+ *	Portions created by Salvatore Mariniello are Copyright (C) 2015.
  *	All Rights Reserved.
  *       https://github.com/mssalvo/jMsvc
  */
@@ -101,7 +101,7 @@ var jMsvc = {
         return this.isUndefined(t) ? this.defaultUrl : this.isUndefined(this.root[t]) && !this.isUndefined(t) ? this.isFunction(controller[t]) ? t : this.defaultUrl : this.isUndefined(this.root[t]) ? this.defaultUrl : this.root[t]
     },
     httpRequest: function (o) {
-        this.async = false;
+        this.async = true;
         this.type = "GET";
         this.dataType = "json";
         this.url = o || null;
@@ -406,7 +406,9 @@ http.get = function (url) {
         },
         view._ = jMsvc._,
         controller.execute = function (t) {
-            return t.apply(controller, [context, request, session, application, view, model])
+            return new Promise(function (resolve, reject) {
+                resolve(t.apply(controller, [context, request, session, application, view, model]))
+            })
         },
         controller.event = {}, controller.gets = jMsvc.prototype, controller._ = jMsvc._, request.set = function (t, i) {
     jMsvc.attrReq[t] = i;
@@ -751,14 +753,13 @@ http.get = function (url) {
 ,
         jMsvc.include = function () {
 
-            var defer = jMsvc._.Deferred(),
-                    filtered = defer.then(function (action) {
+            return this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc])
+                    .then(function (action) {
                         return jMsvc.view.prototype[action].apply(view, [html])
-                    });
-
-            defer.resolve(this.controller.prototype[jMsvc.queryAction()].apply(controller, [jMsvc]));
-            filtered.done(function (b) {
+                    }).then(function (b) {
                 return jMsvc.isView(b).openView(b);
+            }).catch(function (err) {
+                console.log(err);
             });
 
         },
@@ -767,14 +768,14 @@ http.get = function (url) {
             jMsvc.autoRequest(n);
 
             jMsvc.fnLoad.start();
-            var defer = jMsvc._.Deferred(),
-                    filtered = defer.then(function (action) {
-                        return jMsvc.view.prototype[action].apply(view, [html])
-                    });
 
-            defer.resolve(this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc]));
-            filtered.done(function (b) {
-                return jMsvc.openView(b);
+            return this.controller.prototype[jMsvc.getRoot(n)].apply(controller, [jMsvc])
+                    .then(function (action) {
+                        return jMsvc.view.prototype[action].apply(view, [html])
+                    }).then(function (b) {
+                return jMsvc.isView(b).openView(b);
+            }).catch(function (err) {
+                console.log(err);
             });
 
         },
@@ -789,8 +790,8 @@ http.get = function (url) {
                                     case 'url':
                                         $this._($this.getTemplate(j)).load(o[j][k], function (d) {
                                             jMsvc.searchView(jMsvc.getTemplate(j), o);
-                                            jMsvc.writeProperty(jMsvc.getTemplate(j));
                                             jMsvc.isforEach(jMsvc.getTemplate(j));
+                                            jMsvc.writeProperty(jMsvc.getTemplate(j));
                                             jMsvc.initHtmlEvent(jMsvc.getTemplate(j))
                                             jMsvc.writeInclude(jMsvc.getTemplate(j));
                                             jMsvc.isFunction(o[j]['fn']) ? o[j]['fn'].apply(controller, [d]) : false
@@ -813,9 +814,9 @@ http.get = function (url) {
                         } else {
                             $this._($this.getTemplate(j)).load(o[j], function () {
                                 jMsvc.searchView(jMsvc.getTemplate(j), o);
-                                jMsvc.writeProperty(jMsvc.getTemplate(j));
                                 jMsvc.isforEach(jMsvc.getTemplate(j));
-                                jMsvc.initHtmlEvent(jMsvc.getTemplate(j))
+                                jMsvc.writeProperty(jMsvc.getTemplate(j));
+                                jMsvc.initHtmlEvent(jMsvc.getTemplate(j));
                                 jMsvc.writeInclude(jMsvc.getTemplate(j));
                             });
                         }
@@ -949,7 +950,7 @@ http.get = function (url) {
         jMsvc.isFadeIn = function (el) {
             for (a in el.attributes) {
                 if (el.attributes[a] && /(jms-fade|jms-fade\-.*)+$/.test(el.attributes[a].name)) {
-                    jMsvc._(el).animate({opacity: 1}, 910);
+                    jMsvc._(el).animate({opacity: 0.5}, 910);
                 }
             }
             return 0;
@@ -1507,8 +1508,8 @@ http.get = function (url) {
         }, _hashValue = '';
 
 if (!('forEach' in Array.prototype)) {
-    Array.prototype.forEach= function(action, that) {
-        for (var i= 0, n= this.length; i<n; i++)
+    Array.prototype.forEach = function (action, that) {
+        for (var i = 0, n = this.length; i < n; i++)
             if (i in this)
                 action.call(that, this[i], i, this);
     };
