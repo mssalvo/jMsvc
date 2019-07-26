@@ -36,23 +36,23 @@
                        
                         //Example 4 > init action MVC //
                       controller.amovie=function(){
-                          return this.execute(function($http){
+                          return this.execute(function(ctx){
                            
-                            this.get("../demo/auto.json")
-                           .success(function(data) { context.auto=data.Makes;});
-                   
-                   
-                            ///Example-jMsvc/demo/auto.json
-                            return 'amovie'; //init view amovie
-                
-                            
-                          })
+                     return this.open("./auto.json",'json').then((data)=>{
+                        ctx.auto=data.Makes;
+                    	
+		     	}).then(()=>{
+                        	// Return view
+			     return 'amovie';
+                     })
+ 
+                 })
                        }
                        
                        view.amovie=function(){
                           return this.execute(function(){
                          
-			return { body:'./html/body.html' };   //include html/body.html in jms-view='body'
+			return { body:{ templateName:'modale2' }};   //include html/body.html in jms-view='body'
                           })
                        }
                        
@@ -90,6 +90,21 @@
                  <div jms-view="body"></div>
                  
              
+		
+		
+		<template jms-template="modale2">
+               
+		<table>
+                    <!-- forEach -->   
+                <tr jms-foreach="auto">
+                                     <!-- add event doSomething  for the object model -->    
+                <td for-property-html="auto.make_display" jms-event="click:M@doSomething"></td>
+                <td for-property-html="auto.make_country"></td>
+                </tr>
+                </table>
+                     
+               </template>
+		
 		
 	</body>
 </html>
