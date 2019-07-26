@@ -38,7 +38,7 @@ var jMsvc = {
     defaultCssPreload: '.jms-page-loader',
     root: [],
     _: jQuery,
-    fnLoad: {isCustom: false, start: function () {
+    fnLoad: {isCustom: true, start: function () {
             jMsvc._(jMsvc.defaultCssPreload).fadeIn()
         }, end: function () {
             jMsvc._(jMsvc.defaultCssPreload).fadeOut()
@@ -51,6 +51,7 @@ var jMsvc = {
     jmsController: [],
     defaultPreload: "<div class=\"jms-page-loader palette-Teal bg\"><div class=\"preloader pl-xl pls-white\"><svg class=\"pl-circular\" viewBox=\"25 25 50 50\"><circle class=\"plc-path\" cx=\"50\" cy=\"50\" r=\"20\"/></svg></div></div>",
     templates: {},
+    htmlTemplate:{},
     configHash: function (t) {
         if (t) {
             if ("onhashchange" in window) {
@@ -77,6 +78,12 @@ var jMsvc = {
     },
     setTemplate: function (k, v) {
         this.templates[k] = v;
+    },
+    getHtmlTemplate: function (k) {
+        return this.htmlTemplate[k];
+    },
+    setHtmlTemplate: function (k, v) {
+        this.htmlTemplate[k] = v;
     },
     getForEachs: function () {
         return this.forEachs;
@@ -430,7 +437,28 @@ http.get = function (url) {
         controller.get = function (url) {
 
             return new jMsvc.httpRequest(url)
-        },
+        }, 
+        controller.open= function(url,type) {
+            return new Promise(function(resolve, reject){
+                const xhp = new XMLHttpRequest();
+                xhp.open('GET', url, true);
+                xhp.send();
+                xhp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        if(type && type.toLowerCase()==='json') 
+                        resolve(JSON.parse(this.responseText));
+                        else
+                       resolve(this.responseText);    
+                    } else if (this.status === 404) {
+                        reject(new Error(this.responseText));
+                    }
+                }
+                xhp.onerror = function() {
+                    reject(new Error(this.responseText));
+                }
+            })
+        }, 
+                
         /* 
          * getJson (default: dataType = 'jsonp')
          * @param {String} url 
@@ -454,7 +482,9 @@ http.get = function (url) {
          */
         request.get = function (t) {
             return jMsvc.attrReq[t] || jMsvc.queryParameter(t)
-        }, session.setAttribute = function (t, i) {
+        }, 
+   
+   session.setAttribute = function (t, i) {
     return this.set(t, i)
 }, session.getAttribute = function (t) {
     return this.get(t) || ""
@@ -807,7 +837,16 @@ http.get = function (url) {
                                         jMsvc.initHtmlEvent(jMsvc.getTemplate(j))
                                         jMsvc.isFunction(o[j]['fn']) ? o[j]['fn'].apply(controller, [exl]) : false
                                         break;
-
+                                      case 'templateName':
+                                        exl = jMsvc._($this.getHtmlTemplate(o[j]['templateName'])).get();
+                                        $this._($this.getTemplate(j)).html(exl);
+                                        jMsvc.searchView(jMsvc.getTemplate(j), o);
+                                        jMsvc.isforEach(jMsvc.getTemplate(j));
+                                        jMsvc.writeProperty(jMsvc.getTemplate(j));
+                                        jMsvc.writeInclude(jMsvc.getTemplate(j));
+                                        jMsvc.initHtmlEvent(jMsvc.getTemplate(j))
+                                        jMsvc.isFunction(o[j]['fn']) ? o[j]['fn'].apply(controller, [exl]) : false
+                                        break;    
                                 }
                             }
 
@@ -837,7 +876,7 @@ http.get = function (url) {
 
             }
             (function () {
-                return  jMsvc.isforEach(document) && jMsvc.writeProperty(document) && jMsvc.writeInclude(document) && jMsvc.initHtmlEvent(document);
+                return jMsvc.searchHtlmTemplate(document) && jMsvc.isforEach(document) && jMsvc.writeProperty(document) && jMsvc.writeInclude(document) && jMsvc.initHtmlEvent(document);
             })();
             return this;
         },
@@ -955,6 +994,13 @@ http.get = function (url) {
             }
             return 0;
         },
+        jMsvc.searchHtlmTemplate=function(o){
+           jMsvc.forEach(o.querySelectorAll('[jms-template]'), function (el, i) {
+              jMsvc.setHtmlTemplate(el.getAttribute('jms-template'),el.innerHTML)
+              jMsvc._(el).hide();
+            })
+            return true;
+        },          
         jMsvc.isforEach = function (o) {
             var forEachs = [];
             //this.initHtmlEvent(o);
@@ -1517,8 +1563,9 @@ if (!('forEach' in Array.prototype)) {
 
 (function (__) {
     if (!jMsvc.fnLoad.isCustom)
-        __(document.body).append(jMsvc.defaultPreload);
+       __(document.body).append(jMsvc.defaultPreload);
     __(document).ready(function () {
+      __('[jms-template]').hide();
         jMsvc.include();
     })
     window.onpopstate = function (event) {
